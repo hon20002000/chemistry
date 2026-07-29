@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chapter 07｜老師易編輯版</title>
   <meta name="description" content="第七章老師易編輯版教材頁，預留 Markdown 與 HTML 內容插槽，方便加入題目、概念說明與小動畫。" />
+  <link rel="stylesheet" href="./assets/teacher-embeds.css" />
+  <script defer src="./assets/teacher-loader.js"></script>
   <style>
     :root {
       --bg: #f4f7fb;
@@ -17,14 +19,11 @@
       --primary-dark: #115e59;
       --primary-soft: #def7f3;
       --accent: #eef6ff;
-      --warning-soft: #fff8e7;
       --embed-soft: #f8fafc;
       --shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
-      --radius-lg: 20px;
       --radius-md: 14px;
       --sidebar-w: 310px;
     }
-
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
@@ -34,301 +33,63 @@
       color: var(--text);
       line-height: 1.7;
     }
-
-    a { color: inherit; }
-    code, pre {
-      font-family: Consolas, "Courier New", monospace;
-    }
-
-    code {
-      background: #edf2f7;
-      padding: 2px 6px;
-      border-radius: 6px;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: var(--sidebar-w) 1fr;
-      min-height: 100vh;
-    }
-
+    code { background: #edf2f7; padding: 2px 6px; border-radius: 6px; }
+    .layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
     .sidebar {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-      padding: 24px 20px 36px;
-      background: linear-gradient(180deg, #163046, #11293c);
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+      padding: 24px 20px 36px; background: linear-gradient(180deg, #163046, #11293c);
       color: #eef6fb;
-      border-right: 1px solid rgba(255,255,255,0.08);
     }
-
-    .sidebar h1 {
-      margin: 0 0 8px;
-      font-size: 1.25rem;
-      line-height: 1.3;
-    }
-
-    .sidebar p {
-      margin: 0;
-      color: rgba(238,246,251,0.76);
-      font-size: 0.95rem;
-    }
-
-    .side-block {
-      margin-top: 22px;
-      padding-top: 18px;
-      border-top: 1px solid rgba(255,255,255,0.12);
-    }
-
-    .side-block h2 {
-      margin: 0 0 10px;
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: rgba(238,246,251,0.62);
-    }
-
-    .side-nav,
-    .mini-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .side-nav li + li,
-    .mini-list li + li { margin-top: 8px; }
-
-    .side-nav a,
-    .mini-list a {
-      display: block;
-      text-decoration: none;
-      padding: 10px 12px;
-      border-radius: 12px;
+    .sidebar h1 { margin: 0 0 8px; font-size: 1.25rem; }
+    .sidebar p { margin: 0; color: rgba(238,246,251,0.76); font-size: 0.95rem; }
+    .side-block { margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.12); }
+    .side-block h2 { margin: 0 0 10px; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(238,246,251,0.62); }
+    .side-nav, .mini-list { list-style: none; padding: 0; margin: 0; }
+    .side-nav li + li, .mini-list li + li { margin-top: 8px; }
+    .side-nav a, .mini-list a {
+      display: block; text-decoration: none; padding: 10px 12px; border-radius: 12px;
       color: rgba(255,255,255,0.94);
-      transition: background 0.18s ease;
     }
-
-    .side-nav a:hover,
-    .mini-list a:hover { background: rgba(255,255,255,0.08); }
-
-    .content {
-      padding: 30px 34px 80px;
+    .side-nav a:hover, .mini-list a:hover { background: rgba(255,255,255,0.08); }
+    .content { padding: 30px 34px 80px; }
+    .hero, .section {
+      background: var(--surface); border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--shadow);
     }
-
-    .hero,
-    .section {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      box-shadow: var(--shadow);
-    }
-
-    .hero {
-      padding: 30px;
-      background: linear-gradient(135deg, #ffffff, #f4fbfa);
-      margin-bottom: 24px;
-    }
-
+    .hero { padding: 30px; background: linear-gradient(135deg, #ffffff, #f4fbfa); margin-bottom: 24px; }
     .eyebrow {
-      display: inline-block;
-      margin-bottom: 10px;
-      padding: 5px 10px;
-      border-radius: 999px;
-      background: var(--primary-soft);
-      color: var(--primary-dark);
-      font-size: 0.82rem;
-      font-weight: 700;
+      display: inline-block; margin-bottom: 10px; padding: 5px 10px; border-radius: 999px;
+      background: var(--primary-soft); color: var(--primary-dark); font-size: 0.82rem; font-weight: 700;
     }
-
-    .hero h2 {
-      margin: 0 0 10px;
-      font-size: clamp(2rem, 3.2vw, 2.9rem);
-      line-height: 1.15;
-    }
-
-    .hero p {
-      margin: 0 0 12px;
-      color: #506577;
-      max-width: 60rem;
-    }
-
-    .section {
-      margin-top: 24px;
-      padding: 24px;
-    }
-
-    .section h3 {
-      margin: 0 0 10px;
-      font-size: 1.45rem;
-    }
-
-    .section-lead {
-      margin: 0 0 16px;
-      color: var(--muted);
-    }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 18px;
-    }
-
-    .card-grid,
-    .slot-grid,
-    .name-grid {
-      display: grid;
-      gap: 16px;
-    }
-
-    .card-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .hero h2 { margin: 0 0 10px; font-size: clamp(2rem, 3.2vw, 2.9rem); line-height: 1.15; }
+    .hero p { margin: 0 0 12px; color: #506577; max-width: 60rem; }
+    .section { margin-top: 24px; padding: 24px; }
+    .section h3 { margin: 0 0 10px; font-size: 1.45rem; }
+    .section-lead { margin: 0 0 16px; color: var(--muted); }
+    .slot-grid, .card-grid { display: grid; gap: 16px; }
     .slot-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-    .name-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-
-    .card,
-    .slot,
-    .edit-box,
-    .example-box,
-    .name-box {
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      padding: 18px;
-      background: #fff;
+    .card-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .slot, .card {
+      border: 1px solid var(--line); border-radius: var(--radius-md); padding: 18px; background: #fff;
     }
-
-    .card strong,
-    .slot strong,
-    .edit-box strong,
-    .name-box strong {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--primary-dark);
-    }
-
-    .slot {
-      background: linear-gradient(180deg, #fff, #f9fbfd);
-    }
-
+    .slot strong, .card strong { display: block; margin-bottom: 8px; color: var(--primary-dark); }
     .slot-label {
-      display: inline-block;
-      margin-bottom: 10px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      background: var(--accent);
-      color: #35506b;
+      display: inline-block; margin-bottom: 10px; padding: 4px 10px; border-radius: 999px;
+      font-size: 0.8rem; font-weight: 700; background: var(--accent); color: #35506b;
     }
-
-    .md-zone,
-    .html-zone {
-      border: 1px dashed #b8c9da;
-      border-radius: 12px;
-      padding: 14px;
-      margin-top: 12px;
-      background: var(--embed-soft);
+    .md-zone, .html-zone {
+      border: 1px dashed #b8c9da; border-radius: 12px; padding: 14px; margin-top: 12px; background: var(--embed-soft);
     }
-
-    .md-zone::before,
-    .html-zone::before {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 0.8rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      color: var(--muted);
+    .md-zone::before, .html-zone::before {
+      display: block; margin-bottom: 8px; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.04em; color: var(--muted);
     }
-
     .md-zone::before { content: "MARKDOWN SLOT"; }
     .html-zone::before { content: "HTML SLOT"; }
-
-    .placeholder {
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .concept-flow {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .flow-box {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: var(--surface-soft);
-      padding: 14px;
-      text-align: center;
-      font-weight: 700;
-      position: relative;
-    }
-
-    .flow-box::after {
-      content: "→";
-      position: absolute;
-      right: -10px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-    }
-
-    .flow-box:last-child::after { content: ""; }
-
-    .tip-list,
-    .check-list {
-      margin: 0;
-      padding-left: 1.2rem;
-    }
-
-    .example-box {
-      background: linear-gradient(180deg, #fff, #f6fbfa);
-    }
-
-    .edit-box {
-      background: linear-gradient(180deg, #fff, #fffaf0);
-    }
-
-    .edit-box pre {
-      margin: 10px 0 0;
-      padding: 12px;
-      overflow: auto;
-      border-radius: 12px;
-      background: #0f172a;
-      color: #e5edf6;
-      font-size: 0.9rem;
-    }
-
-    .name-box {
-      background: linear-gradient(180deg, #fff, #f8fbfd);
-    }
-
-    .back-home {
-      display: inline-block;
-      margin-top: 18px;
-      text-decoration: none;
-      color: var(--primary);
-      font-weight: 700;
-    }
-
-    @media (max-width: 1100px) {
-      .concept-flow { grid-template-columns: 1fr; }
-      .flow-box::after {
-        content: "↓";
-        right: auto;
-        left: 50%;
-        top: auto;
-        bottom: -17px;
-        transform: translateX(-50%);
-      }
-      .flow-box:last-child::after { content: ""; }
-    }
-
+    .placeholder { color: var(--muted); font-size: 0.95rem; }
+    .back-home { display: inline-block; margin-top: 18px; text-decoration: none; color: var(--primary); font-weight: 700; }
     @media (max-width: 980px) {
       .layout { grid-template-columns: 1fr; }
       .sidebar { position: static; height: auto; }
       .content { padding: 20px; }
-      .two-col { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -337,29 +98,14 @@
     <aside class="sidebar">
       <h1>Chapter 07</h1>
       <p>老師易編輯版 · 支援 Markdown / HTML 內嵌</p>
-
       <div class="side-block">
         <h2>頁面導航</h2>
         <ul class="side-nav">
           <li><a href="#overview">本章導覽</a></li>
-          <li><a href="#slots">內容插槽</a></li>
-          <li><a href="#concept">概念流程</a></li>
-          <li><a href="#question-bank">題目區設計</a></li>
-          <li><a href="#animation">動畫模組</a></li>
-          <li><a href="#naming-guide">命名建議</a></li>
-          <li><a href="#edit-guide">編輯方式</a></li>
+          <li><a href="#markdown-sections">Markdown 區塊</a></li>
+          <li><a href="#html-sections">HTML 區塊</a></li>
         </ul>
       </div>
-
-      <div class="side-block">
-        <h2>建議原則</h2>
-        <ul class="mini-list">
-          <li><a href="#slots">Markdown 管文字</a></li>
-          <li><a href="#question-bank">HTML 管互動題</a></li>
-          <li><a href="#animation">HTML/CSS/JS 管動畫</a></li>
-        </ul>
-      </div>
-
       <div class="side-block">
         <h2>返回網站</h2>
         <ul class="mini-list">
@@ -371,210 +117,57 @@
     <main class="content">
       <section class="hero" id="overview">
         <span class="eyebrow">Teacher Editable Chapter Page</span>
-        <h2>第七章｜可插入 Markdown 與 HTML 的章節頁</h2>
-        <p>這個版本不是只給學生看，也同時是給你維護內容用的章節模板。頁面保留固定版面，但每個教學區塊都明確標示哪些地方適合用 Markdown 寫概念、題目與提示，哪些地方適合用 HTML 放互動題、答案展開區或小動畫。[web:348][web:365]</p>
-        <p>對你這類化學教材站來說，最好的做法是把說明文字與題幹交給 Markdown 管理，把互動展示與概念動畫交給 HTML/CSS/JavaScript 管理，這樣修改內容時最方便，也不容易破壞版面。[web:349][web:356][web:367][web:370]</p>
+        <h2>第七章｜支援外部內容載入的章節頁</h2>
+        <p>這個版本會自動載入 <code>content/</code> 裡的 Markdown 檔與 <code>embeds/</code> 裡的 HTML 檔，讓你用較容易維護的方式更新教材內容。[code_file:2]</p>
+        <p>若頁面內容沒有顯示，請先檢查 <code>assets/teacher-loader.js</code> 是否成功載入，以及 <code>content/</code> 和 <code>embeds/</code> 路徑是否存在。[web:411][web:399]</p>
       </section>
 
-      <section class="section" id="slots">
-        <h3>內容插槽總覽</h3>
-        <p class="section-lead">下面這些插槽名稱可以直接沿用到你之後所有章節。你只要維持相同命名，之後每章都會很好維護。</p>
+      <section class="section" id="markdown-sections">
+        <h3>Markdown 區塊</h3>
+        <p class="section-lead">以下區塊由外部 <code>.md</code> 文件載入，適合放章節導言、概念重點、快速問題與延遲複習。[web:349][web:357]</p>
         <div class="slot-grid">
           <div class="slot">
             <span class="slot-label">Markdown</span>
             <strong>md-intro</strong>
-            <p>放本章導言、學習目標、課前提問、課後重點整理。最適合純文字與條列內容。[web:349][web:357]</p>
-            <div class="md-zone">
-              <div class="placeholder">在這裡貼上 Markdown 內容，例如章節簡介、概念重點、學習提示。</div>
-            </div>
+            <div class="md-zone" id="slot-md-intro"><div class="placeholder">載入 md-intro.md 中…</div></div>
           </div>
-
           <div class="slot">
             <span class="slot-label">Markdown</span>
             <strong>md-concept-notes</strong>
-            <p>放概念說明、例子、錯誤觀念提醒、比較表。適合快速編輯與增補內容。[web:349][web:348]</p>
-            <div class="md-zone">
-              <div class="placeholder">例如：離子鍵定義、陽離子與陰離子比較、金屬鍵 vs 離子鍵。</div>
-            </div>
+            <div class="md-zone" id="slot-md-concept-notes"><div class="placeholder">載入 md-concept-notes.md 中…</div></div>
           </div>
-
           <div class="slot">
-            <span class="slot-label">HTML</span>
-            <strong>html-quick-check</strong>
-            <p>放題目卡、<code>&lt;details&gt;</code> 答案區、配對題、選擇題。這類區塊需要較清楚的互動結構。[web:347][web:356]</p>
-            <div class="html-zone">
-              <div class="placeholder">在這裡貼上 HTML 題目卡，例如 details/summary、按鈕、選項區。</div>
-            </div>
+            <span class="slot-label">Markdown</span>
+            <strong>md-quick-questions</strong>
+            <div class="md-zone" id="slot-md-quick-questions"><div class="placeholder">載入 md-quick-questions.md 中…</div></div>
           </div>
-
-          <div class="slot">
-            <span class="slot-label">HTML</span>
-            <strong>html-concept-demo</strong>
-            <p>放科學概念小動畫、粒子移動示意、Rutherford scattering、電子轉移、離子遷移等。[web:367][web:370]</p>
-            <div class="html-zone">
-              <div class="placeholder">在這裡貼上 HTML/CSS/JS 小元件，例如一個動畫容器和播放按鈕。</div>
-            </div>
-          </div>
-
           <div class="slot">
             <span class="slot-label">Markdown</span>
             <strong>md-review</strong>
-            <p>放延遲複習題、回家作業、考前回顧清單。這類內容常常改動，最適合 Markdown。[web:329][web:332]</p>
-            <div class="md-zone">
-              <div class="placeholder">例如：三天後再做的 5 題回顧題、考前複習 checklist。</div>
-            </div>
-          </div>
-
-          <div class="slot">
-            <span class="slot-label">HTML</span>
-            <strong>html-extra-media</strong>
-            <p>放圖片、iframe、SVG 圖解、互動圖卡。當內容需要特別排版時，優先用 HTML。[web:365][web:370]</p>
-            <div class="html-zone">
-              <div class="placeholder">例如：內嵌圖片、SVG 示意圖、YouTube、互動卡片。</div>
-            </div>
+            <div class="md-zone" id="slot-md-review"><div class="placeholder">載入 md-review.md 中…</div></div>
           </div>
         </div>
       </section>
 
-      <section class="section" id="concept">
-        <h3>概念流程區</h3>
-        <p class="section-lead">本章的固定骨架仍可保留，因為學生需要穩定的學習路徑；但每個步驟旁邊都可以插入 Markdown 或 HTML 內容。[file:344]</p>
-        <div class="concept-flow">
-          <div class="flow-box">金屬鍵</div>
-          <div class="flow-box">生成離子</div>
-          <div class="flow-box">離子鍵</div>
-          <div class="flow-box">名稱與化學式</div>
-          <div class="flow-box">現象與應用</div>
-        </div>
-        <div class="two-col" style="margin-top:18px;">
-          <div class="card">
-            <strong>建議做法</strong>
-            <ul class="tip-list">
-              <li>每個概念節保留 1 個 <code>md-*</code> 區，放說明與重點。</li>
-              <li>每個概念節保留 1 個 <code>html-*</code> 區，放圖解、互動題或動畫。</li>
-              <li>這樣你改內容時只動區塊內部，不用重改整頁。</li>
-            </ul>
-          </div>
-          <div class="card">
-            <strong>區塊命名建議</strong>
-            <ul class="tip-list">
-              <li><code>md-metallic-bond</code></li>
-              <li><code>md-ion-formation</code></li>
-              <li><code>html-ion-demo</code></li>
-              <li><code>html-bond-animation</code></li>
-              <li><code>md-application-notes</code></li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="question-bank">
-        <h3>題目區設計</h3>
-        <p class="section-lead">如果你日後最常做的事情是新增題目，題目區最好分成兩層：題幹可以用 Markdown 產出，但互動包裝建議用 HTML。[web:349][web:356]</p>
-        <div class="name-grid">
-          <div class="name-box">
-            <strong>名稱：md-quick-questions</strong>
-            <p>用途：題幹草稿、開放式問題、回顧題、工作紙提示。</p>
-            <div class="md-zone">
-              <div class="placeholder">例如：請解釋離子鍵的形成過程。</div>
-            </div>
-          </div>
-          <div class="name-box">
-            <strong>名稱：html-quiz-cards</strong>
-            <p>用途：選擇題卡、配對題、答案展開區、即時檢查題。</p>
-            <div class="html-zone">
-              <div class="placeholder">例如：details/summary 題目卡，或按鈕式選項題。</div>
-            </div>
-          </div>
-          <div class="name-box">
-            <strong>名稱：html-misconception-check</strong>
-            <p>用途：找錯處題、常見錯誤題、真假判斷題。</p>
-            <div class="html-zone">
-              <div class="placeholder">例如：讓學生判斷「生成離子後質子數改變」是否正確。</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="example-box" style="margin-top:16px;">
-          <strong>HTML 題目模板範例</strong>
-          <pre>&lt;section id="html-quiz-cards"&gt;
-  &lt;details&gt;
-    &lt;summary&gt;題目 1：鈉原子生成鈉離子時失去多少個電子？&lt;/summary&gt;
-    &lt;p&gt;答案：1 個。因為鈉最外層有 1 個電子，失去後形成 Na+。&lt;/p&gt;
-  &lt;/details&gt;
-
-  &lt;details&gt;
-    &lt;summary&gt;題目 2：離子鍵的本質是甚麼？&lt;/summary&gt;
-    &lt;p&gt;答案：帶相反電荷離子之間的靜電引力。&lt;/p&gt;
-  &lt;/details&gt;
-&lt;/section&gt;</pre>
-        </div>
-      </section>
-
-      <section class="section" id="animation">
-        <h3>動畫模組</h3>
-        <p class="section-lead">像盧瑟福散射實驗、電子轉移、離子遷移這些內容，不建議用純 Markdown；因為它們需要運動、顯示切換或互動控制，應使用 HTML/CSS/JavaScript 模組。[web:367][web:370]</p>
-        <div class="two-col">
-          <div class="card">
-            <strong>建議名稱</strong>
-            <ul class="check-list">
-              <li><code>html-rutherford-demo</code></li>
-              <li><code>html-electron-transfer-demo</code></li>
-              <li><code>html-ion-migration-demo</code></li>
-              <li><code>html-particle-model-demo</code></li>
-            </ul>
-          </div>
-          <div class="card">
-            <strong>適合放甚麼</strong>
-            <ul class="check-list">
-              <li>Canvas 動畫或 div 動畫</li>
-              <li>播放 / 暫停 / 重播按鈕</li>
-              <li>圖解切換與重點標示</li>
-              <li>學生點擊後顯示解釋</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="example-box" style="margin-top:16px;">
-          <strong>HTML 動畫模組骨架範例</strong>
-          <pre>&lt;section id="html-rutherford-demo" class="concept-demo"&gt;
-  &lt;h4&gt;盧瑟福散射實驗&lt;/h4&gt;
-  &lt;div class="animation-stage"&gt;&lt;/div&gt;
-  &lt;button&gt;播放動畫&lt;/button&gt;
-  &lt;p&gt;大部分 α 粒子直線穿過；少數偏折；極少數反彈。&lt;/p&gt;
-&lt;/section&gt;</pre>
-        </div>
-      </section>
-
-      <section class="section" id="naming-guide">
-        <h3>命名規則</h3>
-        <p class="section-lead">命名只要固定，以後就很容易維護。最簡單的規則就是：<code>格式-用途-主題</code>。</p>
+      <section class="section" id="html-sections">
+        <h3>HTML 區塊</h3>
+        <p class="section-lead">以下區塊由外部 <code>.html</code> 文件載入，適合放題目卡、錯誤觀念檢查、電子轉移示意與科學概念動畫。[web:347][web:356][web:367]</p>
         <div class="card-grid">
-          <div class="card"><strong>Markdown 區塊</strong><p><code>md-intro</code>、<code>md-ion-formation</code>、<code>md-review</code>、<code>md-misconceptions</code></p></div>
-          <div class="card"><strong>HTML 區塊</strong><p><code>html-quiz-cards</code>、<code>html-ion-demo</code>、<code>html-rutherford-demo</code>、<code>html-extra-media</code></p></div>
-          <div class="card"><strong>避免命名</strong><p>不要用 <code>box1</code>、<code>test2</code>、<code>new-div</code> 這類名稱，日後會很難找。</p></div>
-        </div>
-      </section>
-
-      <section class="section" id="edit-guide">
-        <h3>你應該怎樣修改</h3>
-        <p class="section-lead">最推薦的實際工作流程如下。</p>
-        <div class="card-grid">
-          <div class="edit-box">
-            <strong>情況 1：只是改解說文字</strong>
-            <p>改 <code>md-intro</code>、<code>md-concept-notes</code>、<code>md-review</code> 這些 Markdown 區塊即可。</p>
+          <div class="card">
+            <strong>html-quiz-cards</strong>
+            <div class="html-zone" id="slot-html-quiz-cards"><div class="placeholder">載入 html-quiz-cards.html 中…</div></div>
           </div>
-          <div class="edit-box">
-            <strong>情況 2：新增一題</strong>
-            <p>若只是文字題，可加到 <code>md-quick-questions</code>；若要有答案展開或題卡，則加到 <code>html-quiz-cards</code>。</p>
+          <div class="card">
+            <strong>html-misconception-check</strong>
+            <div class="html-zone" id="slot-html-misconception-check"><div class="placeholder">載入 html-misconception-check.html 中…</div></div>
           </div>
-          <div class="edit-box">
-            <strong>情況 3：加入概念動畫</strong>
-            <p>在 <code>html-rutherford-demo</code> 或其他 <code>html-*-demo</code> 區塊新增 HTML/CSS/JS 模組。</p>
+          <div class="card">
+            <strong>html-rutherford-demo</strong>
+            <div class="html-zone" id="slot-html-rutherford-demo"><div class="placeholder">載入 html-rutherford-demo.html 中…</div></div>
           </div>
-          <div class="edit-box">
-            <strong>情況 4：加入圖片或圖解</strong>
-            <p>使用 <code>html-extra-media</code>，因為圖片比例、說明文字和排版通常都需要 HTML 控制。</p>
+          <div class="card">
+            <strong>html-ion-demo</strong>
+            <div class="html-zone" id="slot-html-ion-demo"><div class="placeholder">載入 html-ion-demo.html 中…</div></div>
           </div>
         </div>
         <a class="back-home" href="../index.html">← 返回教材首頁</a>
