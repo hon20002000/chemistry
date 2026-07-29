@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指數與數量級：視覺化與計算應用</title>
+    <!-- 引入 MathJax 用於渲染 LaTeX 數學公式 -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+        }
+        .canvas-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: flex-end;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        .canvas-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #fafafa;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+        .canvas-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .label {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #34495e;
+            text-align: center;
+        }
+        .math-box {
+            background-color: #e8f4f8;
+            padding: 20px;
+            border-left: 5px solid #3498db;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .note {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>指數與數量級：視覺化與計算應用</h1>
+
+    <h2>第一部分：數量級的視覺震撼 (10⁰ 到 10⁴)</h2>
+    <p>在下圖中，我們用藍色小圓點來代表數量。你可以直觀地看到，當指數只是加上 1，實際的數量和面積卻會發生「爆炸性」的增長。</p>
+    
+    <div class="canvas-section">
+        <div class="canvas-box">
+            <canvas id="canvas0"></canvas>
+            <div class="label">10⁰<br>(1 個)</div>
+        </div>
+        <div class="canvas-box">
+            <canvas id="canvas1"></canvas>
+            <div class="label">10¹<br>(10 個)</div>
+        </div>
+        <div class="canvas-box">
+            <canvas id="canvas2"></canvas>
+            <div class="label">10²<br>(100 個)</div>
+        </div>
+        <div class="canvas-box">
+            <canvas id="canvas3"></canvas>
+            <div class="label">10³<br>(1,000 個)</div>
+        </div>
+        <div class="canvas-box">
+            <canvas id="canvas4"></canvas>
+            <div class="label">10⁴<br>(10,000 個)</div>
+        </div>
+    </div>
+    <p class="note">註：為了讓 10,000 個點能塞進螢幕，10³ 和 10⁴ 的圓點尺寸被縮小了。如果是同樣大小的點，10⁴ 的面積會是 10² 的 100 倍大！這就是為什麼我們無法在螢幕上畫出 10¹⁶ 個圓點的原因。</p>
+
+    <hr style="border: 1px solid #eee; margin: 40px 0;">
+
+    <h2>第二部分：指數計算應用 (解決畫不出來的數字)</h2>
+    <p>既然螢幕畫不下極大或極小的數字，我們就需要依賴**指數律**來進行代數計算。最常用的規則是「同底數相除，指數相減」：</p>
+    <div class="math-box">
+        $$ \frac{a^m}{a^n} = a^{m-n} $$
+    </div>
+
+    <h3>應用一：巨觀世界的比較 (地球 vs. 籃球)</h3>
+    <p>假設地球的體積大約是 \( 10^{27} \text{ cm}^3 \)，而一個籃球的體積大約是 \( 10^4 \text{ cm}^3 \)。地球可以裝下多少個籃球？</p>
+    <div class="math-box">
+        $$ \text{倍數} = \frac{10^{27}}{10^4} = 10^{27-4} = 10^{23} $$
+        <p><strong>結論：</strong> 地球大約可以裝下 (\(10^{23}\)) (一千億兆)個籃球。這個差距即使把網頁拉到無限大也畫不出來，但數學只需要一行算式。</p>
+    </div>
+
+    <h3>應用二：微觀世界的比較 (雨點 vs. 原子)</h3>
+    <p>在微觀世界中，我們用負指數來表示極小的數字。假設一滴雨點的體積是 \( 10^{-3} \text{ cm}^3 \)，一個原子的體積是 \( 10^{-24} \text{ cm}^3 \)。一滴雨點裡面包含多少個原子？</p>
+    <div class="math-box">
+        $$ \text{倍數} = \frac{10^{-3}}{10^{-24}} = 10^{-3 - (-24)} = 10^{-3 + 24} = 10^{21} $$
+        <p><strong>結論：</strong> 即使是一滴微小的雨點，裡面也包含了 \( 10^{21} \) (十億兆) 個原子。注意這裡的負號相減變成了加號！</p>
+    </div>
+</div>
+
+<script>
+    // 使用 Canvas 繪製點陣列的函數
+    function drawDots(canvasId, totalDots, dotSize, columns) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext('2d');
+        
+        // 計算需要的行數
+        const rows = Math.ceil(totalDots / columns);
+        const padding = 2; // 點之間的間隔
+        const totalSize = dotSize + padding;
+        
+        // 設定 Canvas 尺寸
+        canvas.width = columns * totalSize;
+        canvas.height = rows * totalSize;
+        
+        ctx.fillStyle = '#3498db'; // 設定圓點顏色為藍色
+        
+        for(let i = 0; i < totalDots; i++) {
+            let col = i % columns;
+            let row = Math.floor(i / columns);
+            
+            let x = col * totalSize + totalSize / 2;
+            let y = row * totalSize + totalSize / 2;
+            
+            ctx.beginPath();
+            ctx.arc(x, y, dotSize / 2, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+    }
+
+    // 呼叫函數畫出 10⁰ 到 10⁴ 的點
+    // 參數: (Canvas ID, 總點數, 圓點直徑, 每行點數)
+    drawDots('canvas0', 1, 10, 1);           // 10⁰: 1點, 大小10, 排成1列
+    drawDots('canvas1', 10, 10, 10);         // 10¹: 10點, 大小10, 排成10列
+    drawDots('canvas2', 100, 10, 10);        // 10²: 100點, 大小10, 排成10列
+    
+    // 為了排版美觀，較大的數量使用較小的點
+    drawDots('canvas3', 1000, 4, 25);        // 10³: 1000點, 大小4, 排成25列
+    drawDots('canvas4', 10000, 2, 100);      // 10⁴: 10000點, 大小2, 排成100列
+</script>
+
+</body>
+</html>

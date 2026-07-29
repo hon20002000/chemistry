@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>化學互動解題：同位素、豐度與原子結構</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 { color: #2c3e50; text-align: center; margin-bottom: 20px; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        
+        /* 頁籤樣式 */
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab-btn {
+            padding: 10px 20px; font-size: 1.1em; font-weight: bold; cursor: pointer;
+            border: none; border-radius: 8px 8px 0 0; background-color: #ddd; color: #555; transition: 0.3s;
+        }
+        .tab-btn.active { background-color: #3498db; color: white; }
+        .tab-btn:hover:not(.active) { background-color: #ccc; }
+
+        /* 內容區塊 */
+        .content-section {
+            display: none; background: white; padding: 30px; border-radius: 0 12px 12px 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); width: 100%; max-width: 900px;
+        }
+        .content-section.active { display: flex; flex-direction: column; gap: 20px; }
+        
+        .layout-grid { display: flex; gap: 30px; flex-wrap: wrap; }
+        .interactive-area { flex: 1.5; min-width: 350px; text-align: center; background: #fafafa; padding: 20px; border-radius: 10px; border: 1px solid #eee; }
+        .info-area { flex: 1; min-width: 250px; background: #eaf2f8; padding: 20px; border-radius: 10px; border-left: 5px solid #3498db; }
+        
+        canvas { background: white; border-radius: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.05); margin-bottom: 15px; }
+        
+        .btn { background: #2ecc71; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 1em; font-weight: bold; margin: 5px; }
+        .btn:hover { background: #27ae60; }
+        .btn:disabled { background: #bdc3c7; cursor: not-allowed; }
+        
+        /* 符號顯示器 */
+        .symbol-display { font-size: 4em; font-family: 'Times New Roman', serif; display: flex; align-items: center; justify-content: center; margin: 20px 0; }
+        .symbol-numbers { display: flex; flex-direction: column; text-align: right; margin-right: 5px; font-size: 0.5em; line-height: 1.1; }
+        .symbol-mass { margin-bottom: 2px; font-weight: bold; color: #e74c3c; }
+        .symbol-atomic { color: #3498db; }
+        
+        /* 豐度拉桿 */
+        .slider-group { margin: 15px 0; text-align: left; }
+        input[type=range] { width: 100%; accent-color: #9b59b6; }
+        .progress-bar { width: 100%; height: 25px; background: #ddd; border-radius: 12px; overflow: hidden; margin: 20px 0; position: relative; }
+        .progress-fill { height: 100%; background: #9b59b6; width: 0%; transition: 0.2s; }
+        .target-marker { position: absolute; top: -5px; bottom: -5px; width: 4px; background: #e74c3c; left: calc(100% * (40 - 36) / 4); z-index: 10; }
+    </style>
+</head>
+<body>
+
+    <h1>🧪 化學計算與概念視覺化</h1>
+    
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('tab1')">1. 氫的同位素 (Q10)</button>
+        <button class="tab-btn" onclick="switchTab('tab2')">2. 氬的相對原子質量 (Q11)</button>
+        <button class="tab-btn" onclick="switchTab('tab3')">3. 氟的原子結構 (Q12)</button>
+    </div>
+
+    <!-- 第 1 部分：同位素 -->
+    <div id="tab1" class="content-section active">
+        <h2>第 5.4 節：氫的同位素 (氕、氘、氚)</h2>
+        <div class="layout-grid">
+            <div class="interactive-area">
+                <canvas id="isotopeCanvas" width="300" height="250"></canvas>
+                <div>
+                    <button class="btn" onclick="changeNeutron(1)">+ 增加中子 (n)</button>
+                    <button class="btn" onclick="changeNeutron(-1)" style="background:#e74c3c;">- 減少中子 (n)</button>
+                </div>
+            </div>
+            <div class="info-area">
+                <h3>原子符號</h3>
+                <div class="symbol-display">
+                    <div class="symbol-numbers">
+                        <span class="symbol-mass" id="isoMass">1</span>
+                        <span class="symbol-atomic">1</span>
+                    </div>
+                    <span>H</span>
+                </div>
+                <h3 id="isoName" style="text-align: center; color: #2c3e50;">氫-1 (氕 Protium)</h3>
+                <hr>
+                <p><strong>質子數 (紅)：</strong> <span id="isoProton">1</span> (決定化學性質)</p>
+                <p><strong>中子數 (灰)：</strong> <span id="isoNeutronCount">0</span></p>
+                <p><strong>質量數：</strong> <span id="isoMassText">1</span> (質子 + 中子)</p>
+                <p style="font-size:0.9em; color:#7f8c8d; margin-top:15px;">💡 <b>思考 (Q10b)：</b> 因為質子數相同，氘(D)與氚(T)形成的化合物化學性質相同，只是質量不同。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第 2 部分：豐度與相對質量 -->
+    <div id="tab2" class="content-section">
+        <h2>第 5.5 節：氬的相對原子質量 (加權平均)</h2>
+        <p>調整以下三種氬同位素的比例（權重），觀察平均質量的變化。試著找出為什麼氬的相對原子質量是 40.0？</p>
+        <div class="layout-grid">
+            <div class="interactive-area">
+                <div class="slider-group">
+                    <label>Ar-36 比例: <span id="val36">0</span>%</label>
+                    <input type="range" id="slide36" min="0" max="100" value="0" oninput="calcMass()">
+                </div>
+                <div class="slider-group">
+                    <label>Ar-38 比例: <span id="val38">0</span>%</label>
+                    <input type="range" id="slide38" min="0" max="100" value="0" oninput="calcMass()">
+                </div>
+                <div class="slider-group">
+                    <label>Ar-40 比例: <span id="val40">100</span>%</label>
+                    <input type="range" id="slide40" min="0" max="100" value="100" oninput="calcMass()">
+                </div>
+                
+                <h3 style="margin-top: 30px;">平均質量計算結果：</h3>
+                <div style="font-size: 3em; font-weight: bold; color: #8e44ad;" id="avgMassDisplay">40.00</div>
+                
+                <div style="position: relative; margin-top: 20px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.8em; color: #7f8c8d;">
+                        <span>36.0</span><span>38.0</span><span>40.0 (目標)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <!-- 標記 40.0 的位置 -->
+                        <div class="target-marker" style="left: 100%;"></div>
+                        <div class="progress-fill" id="massBar" style="width: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-area">
+                <h3>數學公式解碼</h3>
+                <p>相對原子質量 =</p>
+                <div style="background: white; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 0.9em; margin-bottom: 15px;">
+                    (36 × <span id="eq36">0</span>%) + <br>
+                    (38 × <span id="eq38">0</span>%) + <br>
+                    (40 × <span id="eq40">100</span>%)
+                </div>
+                <p>💡 <b>解答 (Q11d)：</b> 因為實際測量出的氬相對原子質量為 40.0，這表示在自然界中，質量最大的 <b>Ar-40</b> 佔了絕大多數（約 99.6%），把平均值強烈拉向 40。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第 3 部分：氟的結構 -->
+    <div id="tab3" class="content-section">
+        <h2>第 5.6 節：氟-19 (F) 的原子結構</h2>
+        <div class="layout-grid">
+            <div class="interactive-area">
+                <canvas id="fluorineCanvas" width="350" height="350"></canvas>
+                <div style="margin-top: 10px;">
+                    <button class="btn" id="btnAddP" onclick="addParticle('p')">加質子 (目前: <span id="c_p">0</span>/9)</button>
+                    <button class="btn" id="btnAddN" onclick="addParticle('n')" style="background:#95a5a6;">加中子 (目前: <span id="c_n">0</span>/10)</button>
+                    <button class="btn" id="btnAddE" onclick="addParticle('e')" style="background:#f39c12;">加電子 (目前: <span id="c_e">0</span>/9)</button>
+                    <br><button class="btn" onclick="resetF()" style="background:#e74c3c; margin-top:10px;">重置原子</button>
+                </div>
+            </div>
+            <div class="info-area">
+                <h3>氟-19 次原子粒子資訊</h3>
+                <ul style="line-height: 1.8;">
+                    <li><b>質子 (Proton)：</b> 帶正電 (+)，位於原子核。<br> <span style="color:#e74c3c">原子序 9 = 9 個質子</span></li>
+                    <li><b>中子 (Neutron)：</b> 不帶電 (0)，位於原子核。<br> <span style="color:#7f8c8d">質量 19 - 質子 9 = 10 個中子</span></li>
+                    <li><b>電子 (Electron)：</b> 帶負電 (-)，位於電子層。<br> <span style="color:#f39c12">中性原子 = 9 個電子</span></li>
+                </ul>
+                <hr>
+                <h3>電子排佈 (Q12a)</h3>
+                <div style="font-size: 2.5em; font-weight: bold; color: #2980b9; text-align: center; letter-spacing: 5px;" id="elecArr">0</div>
+                <p style="text-align: center; color: #7f8c8d;">第一層最多 2，第二層最多 8</p>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- 頁籤切換邏輯 ---
+    function switchTab(tabId) {
+        document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+        
+        if(tabId === 'tab1') drawIsotope();
+        if(tabId === 'tab3') drawFluorine();
+    }
+
+    // --- Tab 1: 氫同位素 ---
+    let iso_n = 0; // 初始中子數
+    const isoCtx = document.getElementById('isotopeCanvas').getContext('2d');
+    
+    function changeNeutron(delta) {
+        iso_n += delta;
+        if(iso_n < 0) iso_n = 0;
+        if(iso_n > 2) iso_n = 2;
+        
+        let mass = 1 + iso_n;
+        document.getElementById('isoMass').innerText = mass;
+        document.getElementById('isoMassText').innerText = mass;
+        document.getElementById('isoNeutronCount').innerText = iso_n;
+        
+        let names = ["氫-1 (氕 Protium)", "氫-2 (氘 Deuterium) - 符號也作 D", "氫-3 (氚 Tritium) - 符號也作 T (Q10c答案)"];
+        document.getElementById('isoName').innerText = names[iso_n];
+        
+        drawIsotope();
+    }
+    
+    function drawIsotope() {
+        isoCtx.clearRect(0, 0, 300, 250);
+        let cx = 150, cy = 125;
+        
+        // 畫軌道與電子 (氫固定1個)
+        isoCtx.beginPath();
+        isoCtx.arc(cx, cy, 80, 0, Math.PI*2);
+        isoCtx.strokeStyle = "#bdc3c7";
+        isoCtx.stroke();
+        
+        isoCtx.beginPath();
+        isoCtx.arc(cx, cy - 80, 5, 0, Math.PI*2);
+        isoCtx.fillStyle = "#f1c40f"; // 電子
+        isoCtx.fill();
+        
+        // 畫原子核 (群集)
+        // 質子
+        isoCtx.beginPath();
+        isoCtx.arc(cx - (iso_n>0?10:0), cy, 15, 0, Math.PI*2);
+        isoCtx.fillStyle = "#e74c3c";
+        isoCtx.fill();
+        isoCtx.fillStyle = "white"; isoCtx.font="12px Arial"; isoCtx.fillText("+", cx-(iso_n>0?13:-3), cy+4);
+        
+        // 中子
+        if(iso_n >= 1) {
+            isoCtx.beginPath();
+            isoCtx.arc(cx + 10, cy - 5, 15, 0, Math.PI*2);
+            isoCtx.fillStyle = "#95a5a6";
+            isoCtx.fill();
+        }
+        if(iso_n >= 2) {
+            isoCtx.beginPath();
+            isoCtx.arc(cx + 5, cy + 12, 15, 0, Math.PI*2);
+            isoCtx.fillStyle = "#95a5a6";
+            isoCtx.fill();
+        }
+    }
+
+    // --- Tab 2: 氬的加權平均 ---
+    function calcMass() {
+        let w36 = parseFloat(document.getElementById('slide36').value);
+        let w38 = parseFloat(document.getElementById('slide38').value);
+        let w40 = parseFloat(document.getElementById('slide40').value);
+        
+        let total = w36 + w38 + w40;
+        if(total === 0) { w40 = 1; total = 1; } // 避免除以0
+        
+        let p36 = (w36/total * 100);
+        let p38 = (w38/total * 100);
+        let p40 = (w40/total * 100);
+        
+        document.getElementById('val36').innerText = p36.toFixed(1);
+        document.getElementById('val38').innerText = p38.toFixed(1);
+        document.getElementById('val40').innerText = p40.toFixed(1);
+        
+        document.getElementById('eq36').innerText = p36.toFixed(1);
+        document.getElementById('eq38').innerText = p38.toFixed(1);
+        document.getElementById('eq40').innerText = p40.toFixed(1);
+        
+        let avg = (36*p36 + 38*p38 + 40*p40) / 100;
+        document.getElementById('avgMassDisplay').innerText = avg.toFixed(2);
+        
+        // 更新進度條 (從 36 到 40 的比例)
+        let percent = ((avg - 36) / 4) * 100;
+        document.getElementById('massBar').style.width = percent + "%";
+        
+        // 顏色變化：越接近 40 越綠
+        if(Math.abs(avg - 40) < 0.1) {
+            document.getElementById('avgMassDisplay').style.color = "#2ecc71";
+        } else {
+            document.getElementById('avgMassDisplay').style.color = "#8e44ad";
+        }
+    }
+
+    // --- Tab 3: 氟結構 ---
+    let f_p = 0, f_n = 0, f_e = 0;
+    const fCtx = document.getElementById('fluorineCanvas').getContext('2d');
+    
+    function addParticle(type) {
+        if(type === 'p' && f_p < 9) f_p++;
+        if(type === 'n' && f_n < 10) f_n++;
+        if(type === 'e' && f_e < 9) f_e++;
+        
+        document.getElementById('c_p').innerText = f_p;
+        document.getElementById('c_n').innerText = f_n;
+        document.getElementById('c_e').innerText = f_e;
+        
+        document.getElementById('btnAddP').disabled = (f_p >= 9);
+        document.getElementById('btnAddN').disabled = (f_n >= 10);
+        document.getElementById('btnAddE').disabled = (f_e >= 9);
+        
+        updateElectronArrangement();
+        drawFluorine();
+    }
+    
+    function resetF() {
+        f_p = 0; f_n = 0; f_e = 0;
+        document.getElementById('c_p').innerText = "0";
+        document.getElementById('c_n').innerText = "0";
+        document.getElementById('c_e').innerText = "0";
+        document.getElementById('btnAddP').disabled = false;
+        document.getElementById('btnAddN').disabled = false;
+        document.getElementById('btnAddE').disabled = false;
+        updateElectronArrangement();
+        drawFluorine();
+    }
+    
+    function updateElectronArrangement() {
+        if(f_e === 0) document.getElementById('elecArr').innerText = "0";
+        else if(f_e <= 2) document.getElementById('elecArr').innerText = f_e.toString();
+        else document.getElementById('elecArr').innerText = "2, " + (f_e - 2).toString();
+    }
+    
+    function drawFluorine() {
+        fCtx.clearRect(0, 0, 350, 350);
+        let cx = 175, cy = 175;
+        
+        // 畫原子核區
+        fCtx.beginPath();
+        fCtx.arc(cx, cy, 30, 0, Math.PI*2);
+        fCtx.fillStyle = "#fdf2e9";
+        fCtx.fill();
+        fCtx.strokeStyle = "#e67e22";
+        fCtx.stroke();
+        
+        // 寫入核內數字
+        fCtx.fillStyle = "#e74c3c"; fCtx.font="14px Arial bold"; fCtx.fillText(f_p + " p+", cx-15, cy-5);
+        fCtx.fillStyle = "#7f8c8d"; fCtx.fillText(f_n + " n0", cx-15, cy+15);
+        
+        // 畫電子層
+        let shells = [2, 7];
+        let radii = [70, 120];
+        let currentE = f_e;
+        
+        for(let i=0; i<2; i++) {
+            // 畫軌道圈
+            fCtx.beginPath();
+            fCtx.arc(cx, cy, radii[i], 0, Math.PI*2);
+            fCtx.strokeStyle = "rgba(52, 152, 219, 0.4)";
+            fCtx.lineWidth = 2;
+            fCtx.stroke();
+            
+            // 畫電子
+            let eInShell = Math.min(currentE, shells[i]);
+            currentE -= eInShell;
+            
+            for(let j=0; j<eInShell; j++) {
+                let angle = (Math.PI * 2 / shells[i]) * j - Math.PI/2;
+                let ex = cx + radii[i] * Math.cos(angle);
+                let ey = cy + radii[i] * Math.sin(angle);
+                
+                fCtx.beginPath();
+                fCtx.arc(ex, ey, 6, 0, Math.PI*2);
+                fCtx.fillStyle = "#f39c12"; // 電子顏色
+                fCtx.fill();
+                fCtx.fillStyle = "white"; fCtx.font="10px Arial"; fCtx.fillText("-", ex-3, ey+3);
+            }
+        }
+    }
+
+    // 初始化繪圖
+    drawIsotope();
+    calcMass();
+    drawFluorine();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互動原子建造器：認識基本粒子與同位素</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            max-width: 900px;
+            width: 100%;
+            gap: 20px;
+        }
+        .canvas-area {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #1e272e;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        canvas {
+            background-color: #1e272e;
+            border-radius: 10px;
+        }
+        .panel {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .control-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border-left: 5px solid #ccc;
+        }
+        .control-group.proton { border-color: #ff4757; }
+        .control-group.neutron { border-color: #747d8c; }
+        .control-group.electron { border-color: #1e90ff; }
+        
+        .btn {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn:hover { background: #eee; }
+        .btn:active { transform: scale(0.9); }
+        
+        .info-box {
+            background: #eccc68;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .symbol-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            font-weight: bold;
+            font-family: 'Times New Roman', Times, serif;
+            margin: 10px 0;
+        }
+        .numbers {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.4em;
+            margin-right: 5px;
+            text-align: right;
+            line-height: 1.1;
+        }
+        .charge {
+            font-size: 0.4em;
+            margin-left: 5px;
+            vertical-align: top;
+            position: relative;
+            top: -15px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .stat-card {
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>⚛️ 互動原子建造器</h1>
+    <p>試著加減質子、中子和電子，觀察原子的身分、質量與電性變化！</p>
+
+    <div class="container">
+        <!-- 左側：視覺化畫布 -->
+        <div class="canvas-area">
+            <canvas id="atomCanvas" width="350" height="350"></canvas>
+            <div style="color: white; margin-top: 10px;">圖例：<span style="color:#ff4757;">● 質子</span> | <span style="color:#a4b0be;">● 中子</span> | <span style="color:#1e90ff;">● 電子</span></div>
+        </div>
+
+        <!-- 右側：控制與資訊面板 -->
+        <div class="panel">
+            
+            <div class="info-box">
+                <h2 id="elementName" style="margin: 0;">碳 (Carbon)</h2>
+                <div id="isotopeStatus" style="font-size: 0.9em; color: #333;">同位素狀態：穩定的碳-12</div>
+                
+                <div class="symbol-display">
+                    <div class="numbers">
+                        <span id="massNum">12</span>
+                        <span id="atomicNum">6</span>
+                    </div>
+                    <span id="elementSymbol">C</span>
+                    <span class="charge" id="chargeDisplay"></span>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div>淨電荷 (電性)</div>
+                    <strong id="netChargeStr" style="font-size: 1.5em; color: #1e90ff;">中性 (0)</strong>
+                </div>
+                <div class="stat-card">
+                    <div>質量數 (核子數)</div>
+                    <strong id="massStr" style="font-size: 1.5em; color: #ff4757;">12</strong>
+                </div>
+            </div>
+
+            <div class="control-group proton">
+                <div><strong>質子 (p⁺)</strong><br><small>決定元素種類 (原子序)</small></div>
+                <div>
+                    <button class="btn" onclick="changeParticle('p', -1)">-</button>
+                    <span id="pCount" style="font-size: 1.2em; display: inline-block; width: 30px; text-align: center;">6</span>
+                    <button class="btn" onclick="changeParticle('p', 1)">+</button>
+                </div>
+            </div>
+
+            <div class="control-group neutron">
+                <div><strong>中子 (n⁰)</strong><br><small>影響質量 (製造同位素)</small></div>
+                <div>
+                    <button class="btn" onclick="changeParticle('n', -1)">-</button>
+                    <span id="nCount" style="font-size: 1.2em; display: inline-block; width: 30px; text-align: center;">6</span>
+                    <button class="btn" onclick="changeParticle('n', 1)">+</button>
+                </div>
+            </div>
+
+            <div class="control-group electron">
+                <div><strong>電子 (e⁻)</strong><br><small>影響電性 (製造離子)</small></div>
+                <div>
+                    <button class="btn" onclick="changeParticle('e', -1)">-</button>
+                    <span id="eCount" style="font-size: 1.2em; display: inline-block; width: 30px; text-align: center;">6</span>
+                    <button class="btn" onclick="changeParticle('e', 1)">+</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<script>
+    // 元素資料表
+    const elements = [
+        { name: "未知", symbol: "?" },
+        { name: "氫 (Hydrogen)", symbol: "H" },
+        { name: "氦 (Helium)", symbol: "He" },
+        { name: "鋰 (Lithium)", symbol: "Li" },
+        { name: "鈹 (Beryllium)", symbol: "Be" },
+        { name: "硼 (Boron)", symbol: "B" },
+        { name: "碳 (Carbon)", symbol: "C" },
+        { name: "氮 (Nitrogen)", symbol: "N" },
+        { name: "氧 (Oxygen)", symbol: "O" },
+        { name: "氟 (Fluorine)", symbol: "F" },
+        { name: "氖 (Neon)", symbol: "Ne" }
+    ];
+
+    // 初始狀態
+    let p = 6, n = 6, e = 6;
+
+    const canvas = document.getElementById('atomCanvas');
+    const ctx = canvas.getContext('2d');
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+
+    function changeParticle(type, amount) {
+        if (type === 'p') {
+            p += amount;
+            if (p < 1) p = 1;
+            if (p > 10) p = 10;
+        } else if (type === 'n') {
+            n += amount;
+            if (n < 0) n = 0;
+            if (n > 15) n = 15;
+        } else if (type === 'e') {
+            e += amount;
+            if (e < 0) e = 0;
+            if (e > 10) e = 10;
+        }
+        updateUI();
+    }
+
+    function updateUI() {
+        document.getElementById('pCount').innerText = p;
+        document.getElementById('nCount').innerText = n;
+        document.getElementById('eCount').innerText = e;
+
+        let mass = p + n;
+        let charge = p - e;
+        let element = elements[p];
+
+        document.getElementById('atomicNum').innerText = p;
+        document.getElementById('massNum').innerText = mass;
+        document.getElementById('elementSymbol').innerText = element.symbol;
+        document.getElementById('elementName').innerText = element.name;
+        document.getElementById('massStr').innerText = mass;
+
+        let chargeStr = "", netChargeStr = "中性 (0)";
+        if (charge > 0) {
+            chargeStr = charge === 1 ? "+" : charge + "+";
+            netChargeStr = "+" + charge + " (陽離子)";
+        } else if (charge < 0) {
+            chargeStr = charge === -1 ? "-" : Math.abs(charge) + "-";
+            netChargeStr = charge + " (陰離子)";
+        }
+        document.getElementById('chargeDisplay').innerText = chargeStr;
+        document.getElementById('netChargeStr').innerText = netChargeStr;
+
+        let isotopeMsg = "同位素：" + element.symbol + "-" + mass;
+        if (p === 6) {
+            if (n === 6) isotopeMsg = "🎈 穩定的【碳-12】";
+            else if (n === 7) isotopeMsg = "🎈 穩定的【碳-13】";
+            else if (n === 8) isotopeMsg = "⚠️ 具放射性的【碳-14】";
+        }
+        document.getElementById('isotopeStatus').innerText = isotopeMsg;
+
+        drawAtom();
+    }
+
+    function drawAtom() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 畫電子軌道 (因應原子核變大，將軌道稍微向外擴張)
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+        ctx.lineWidth = 1;
+        const shellRadius = [70, 125]; 
+        
+        ctx.beginPath(); ctx.arc(centerX, centerY, shellRadius[0], 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(centerX, centerY, shellRadius[1], 0, Math.PI * 2); ctx.stroke();
+
+        // 畫電子
+        ctx.fillStyle = "#1e90ff";
+        let eRemaining = e;
+        let shell1_e = Math.min(eRemaining, 2);
+        for(let i=0; i<shell1_e; i++) {
+            let angle = (Math.PI * 2 / shell1_e) * i;
+            let ex = centerX + shellRadius[0] * Math.cos(angle);
+            let ey = centerY + shellRadius[0] * Math.sin(angle);
+            ctx.beginPath(); ctx.arc(ex, ey, 6, 0, Math.PI * 2); ctx.fill();
+        }
+        eRemaining -= shell1_e;
+
+        if (eRemaining > 0) {
+            let shell2_e = Math.min(eRemaining, 8);
+            for(let i=0; i<shell2_e; i++) {
+                let angle = (Math.PI * 2 / shell2_e) * i + Math.PI/4; 
+                let ex = centerX + shellRadius[1] * Math.cos(angle);
+                let ey = centerY + shellRadius[1] * Math.sin(angle);
+                ctx.beginPath(); ctx.arc(ex, ey, 6, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        // ==========================================
+        // 畫原子核 (使用費馬螺旋 Fermat's spiral 演算法)
+        // ==========================================
+        let nucleons = [];
+        let tempP = p, tempN = n;
+        
+        // 將質子和中子交錯混合放入陣列，讓畫面看起來更均勻
+        while(tempP > 0 || tempN > 0) {
+            if(tempP > 0) { nucleons.push('p'); tempP--; }
+            if(tempN > 0) { nucleons.push('n'); tempN--; }
+        }
+
+        const scalingFactor = 11; // 粒子間的擴展距離
+        const goldenAngle = 2.39996; // 黃金角度 (大約 137.5 度)
+        const particleRadius = 9;
+
+        // 從外向內畫 (或由內向外)，利用螺旋線完美佈局
+        for(let i = 0; i < nucleons.length; i++) {
+            // 計算螺旋座標
+            let r = scalingFactor * Math.sqrt(i);
+            let theta = i * goldenAngle;
+            let px = centerX + r * Math.cos(theta);
+            let py = centerY + r * Math.sin(theta);
+
+            ctx.beginPath(); 
+            ctx.arc(px, py, particleRadius, 0, Math.PI * 2); 
+            
+            if (nucleons[i] === 'p') {
+                // 質子樣式
+                ctx.fillStyle = "#ff4757"; 
+                ctx.fill();
+                ctx.strokeStyle = "#c0392b"; // 加上較深的紅色邊框
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                
+                // 畫加號
+                ctx.fillStyle = "white"; 
+                ctx.font = "12px Arial"; 
+                ctx.textAlign = "center"; 
+                ctx.textBaseline = "middle";
+                ctx.fillText("+", px, py);
+            } else {
+                // 中子樣式
+                ctx.fillStyle = "#a4b0be"; 
+                ctx.fill();
+                ctx.strokeStyle = "#747d8c"; // 加上較深的灰色邊框
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+            }
+        }
+    }
+
+    updateUI();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 07 化學平衡</title>
+  <style>
+    :root {
+      --bg: #fcfcfd;
+      --surface: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #7c3aed;
+      --accent: #ede9fe;
+      --line: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    .wrap {
+      width: min(1080px, 92%);
+      margin: 0 auto;
+    }
+    header {
+      background: linear-gradient(135deg, #6d28d9, #4c1d95);
+      color: white;
+      padding: 42px 20px;
+    }
+    .breadcrumb a {
+      color: #ddd6fe;
+      text-decoration: none;
+    }
+    main { padding: 30px 0 54px; }
+    .hero, .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.04);
+    }
+    .hero { margin-bottom: 22px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 18px;
+    }
+    .pill {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--primary);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 12px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    ul { padding-left: 1.2rem; }
+    .small { color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="breadcrumb"><a href="../index.html">首頁</a> / Chapter 07</div>
+      <h1>Chapter 07：化學平衡</h1>
+      <p>本章首頁可作為「一章一入口」，集中放置本章的簡報、互動頁、練習題、補充閱讀與學生提問連結。</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section class="hero">
+        <div class="pill">章節總覽</div>
+        <h2>本章建議內容</h2>
+        <ul>
+          <li>可逆反應與平衡狀態的基本概念</li>
+          <li>平衡常數 K 的意義</li>
+          <li>勒沙特列原理與濃度、壓力、溫度的影響</li>
+          <li>圖像分析、實驗觀察與常見錯誤概念澄清</li>
+        </ul>
+        <p class="small">你可把這一區當作教師的章節說明頁，也可給學生作為本章導航頁。</p>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <div class="pill">PPT / 教學簡報</div>
+          <h3>簡報入口</h3>
+          <p>可連到本章的簡報頁，例如 <code>slides.html</code>，供課堂講解或學生重溫。</p>
+          <a class="btn" href="#">稍後加入</a>
+        </article>
+
+        <article class="card">
+          <div class="pill">Interactive HTML</div>
+          <h3>互動模擬</h3>
+          <p>可放入平衡移動模擬、濃度改變示意、圖像拖放或概念圖活動。</p>
+          <a class="btn" href="#">稍後加入</a>
+        </article>
+
+        <article class="card">
+          <div class="pill">Practice</div>
+          <h3>練習與自測</h3>
+          <p>可連到 quiz.html、Google Forms 或其他練習頁，讓學生課後自測。</p>
+          <a class="btn" href="#">稍後加入</a>
+        </article>
+
+        <article class="card">
+          <div class="pill">Q&amp;A</div>
+          <h3>提問區</h3>
+          <p>可在這裡放 Google Forms 提問連結，讓學生提交本章疑問。</p>
+          <a class="btn" href="#">稍後加入</a>
+        </article>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

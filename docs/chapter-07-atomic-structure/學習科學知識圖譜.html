@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>learning-science-knowledge-graph</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root,[data-theme="light"]{
+      --bg:#f6f4ef; --panel:#fcfbf8; --panel-2:#f1eee7; --text:#26231e; --muted:#6c675e; --border:#d8d2c7;
+      --primary:#0b6e74; --blue:#2d6cdf; --gold:#c08b00; --purple:#7e4cc9; --green:#3f7b2b; --red:#b44a3e;
+      --shadow:0 20px 60px rgba(38,35,30,.12);
+      --font-display:'Noto Serif TC', serif; --font-body:'Noto Sans TC', sans-serif;
+    }
+    [data-theme="dark"]{
+      --bg:#181613; --panel:#211e1a; --panel-2:#2a2622; --text:#eee8dc; --muted:#b6ad9f; --border:#3c3732;
+      --primary:#54a3ad; --blue:#7fb0ff; --gold:#f0be50; --purple:#b590f2; --green:#85be64; --red:#e18173;
+      --shadow:0 20px 60px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{font-family:var(--font-body);background:
+      radial-gradient(circle at 10% 10%, color-mix(in srgb, var(--primary) 14%, transparent), transparent 24%),
+      radial-gradient(circle at 90% 20%, color-mix(in srgb, var(--blue) 12%, transparent), transparent 24%),
+      radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--gold) 10%, transparent), transparent 28%),
+      var(--bg);color:var(--text);min-height:100vh}
+    .shell{max-width:1500px;margin:0 auto;padding:24px}
+    .topbar{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:18px;flex-wrap:wrap}
+    h1{font-family:var(--font-display);font-size:clamp(2rem,3vw,3.2rem);line-height:1.08;margin:0 0 8px}
+    .lead{max-width:72ch;color:var(--muted);margin:0}
+    .controls{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{appearance:none;border:1px solid var(--border);background:var(--panel);color:var(--text);padding:10px 14px;border-radius:999px;font-weight:700;cursor:pointer}
+    .btn:hover{transform:translateY(-1px)}
+    .legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:var(--panel);border:1px solid var(--border);font-size:14px;color:var(--muted)}
+    .swatch{width:12px;height:12px;border-radius:50%}
+    .graph-shell{background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--border);border-radius:24px;box-shadow:var(--shadow);overflow:hidden;position:relative}
+    .graph-meta{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--border);color:var(--muted);font-size:14px}
+    svg{display:block;width:100%;height:78vh;min-height:680px;background-image:linear-gradient(to right, rgba(0,0,0,.03) 1px, transparent 1px),linear-gradient(to bottom, rgba(0,0,0,.03) 1px, transparent 1px);background-size:48px 48px}
+    .edge{stroke:color-mix(in srgb, var(--text) 20%, transparent);stroke-width:2.2;fill:none;marker-end:url(#arrow)}
+    .edge-label{font-size:13px;fill:var(--muted);paint-order:stroke;stroke:var(--panel);stroke-width:8px;stroke-linejoin:round;text-anchor:middle;dominant-baseline:middle}
+    .node circle{stroke:color-mix(in srgb, var(--text) 18%, transparent);stroke-width:2.2;filter:drop-shadow(0 10px 18px rgba(0,0,0,.12));cursor:grab}
+    .node.dragging circle{cursor:grabbing}
+    .node text{pointer-events:none}
+    .node-title{font-size:15px;font-weight:800;fill:#fff;text-anchor:middle;dominant-baseline:middle}
+    .node-sub{font-size:11px;font-weight:700;fill:rgba(255,255,255,.84);text-anchor:middle}
+    .panel{position:absolute;right:16px;bottom:16px;width:min(360px,calc(100% - 32px));background:color-mix(in srgb, var(--panel) 88%, transparent);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:20px;padding:16px 16px 14px;box-shadow:var(--shadow)}
+    .panel h2{margin:0 0 8px;font-size:18px}
+    .panel p{margin:0 0 8px;color:var(--muted);font-size:14px;line-height:1.55}
+    .panel ul{margin:8px 0 0 18px;padding:0;color:var(--muted);font-size:14px}
+    .panel li{margin:0 0 6px}
+    .panel strong{color:var(--text)}
+    @media (max-width:900px){svg{height:72vh;min-height:620px}.panel{position:static;width:auto;margin:14px}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div>
+        <h1>學習科學知識圖譜</h1>
+        <p class="lead">這一版改為真正的節點—連線式知識圖譜：每個概念是一個節點，節點之間用有標籤的關係線連接，可拖曳節點、投影展示，也可作為課堂上引導學生補充關係詞的底圖。</p>
+      </div>
+      <div class="controls">
+        <button class="btn" data-theme-toggle>🌗 深淺色</button>
+        <button class="btn" id="resetBtn">↺ 重置位置</button>
+        <button class="btn" onclick="window.print()">🖨️ 列印</button>
+      </div>
+    </header>
+
+    <div class="legend">
+      <div class="chip"><span class="swatch" style="background:var(--primary)"></span>核心概念</div>
+      <div class="chip"><span class="swatch" style="background:var(--blue)"></span>呈現與例子</div>
+      <div class="chip"><span class="swatch" style="background:var(--gold)"></span>學生生成</div>
+      <div class="chip"><span class="swatch" style="background:var(--purple)"></span>合作與任務設計</div>
+      <div class="chip"><span class="swatch" style="background:var(--green)"></span>評估</div>
+      <div class="chip"><span class="swatch" style="background:var(--red)"></span>風險/負荷</div>
+    </div>
+
+    <section class="graph-shell">
+      <div class="graph-meta">
+        <div>操作：拖曳節點可重排位置；點擊節點可在右下角查看說明。</div>
+        <div>設計原則：用節點表示概念，用連線標出「支持、限制、需要、評估」等關係。</div>
+      </div>
+
+      <svg id="graph" viewBox="0 0 1400 900" role="img" aria-label="學習科學知識圖譜">
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"></path>
+          </marker>
+        </defs>
+        <g id="edges"></g>
+        <g id="edgeLabels"></g>
+        <g id="nodes"></g>
+      </svg>
+
+      <aside class="panel" id="infoPanel">
+        <h2>中心概念</h2>
+        <p><strong>學習科學下的教學設計</strong>：重點不是把活動做得多，而是讓訊息呈現、學生思考與任務設計互相配合，減少外在負荷，提升真正理解。</p>
+        <ul>
+          <li>節點：代表概念。</li>
+          <li>箭線：代表概念之間的關係。</li>
+          <li>關係詞：幫學生把圖譜讀成完整命題句。</li>
+        </ul>
+      </aside>
+    </section>
+  </div>
+
+  <script>
+    const svg = document.getElementById('graph');
+    const edgesG = document.getElementById('edges');
+    const edgeLabelsG = document.getElementById('edgeLabels');
+    const nodesG = document.getElementById('nodes');
+    const panel = document.getElementById('infoPanel');
+
+    const colorMap = {
+      core: 'var(--primary)',
+      media: 'var(--blue)',
+      generate: 'var(--gold)',
+      collaborate: 'var(--purple)',
+      assess: 'var(--green)',
+      risk: 'var(--red)'
+    };
+
+    const initialNodes = [
+      { id:'core', label:'學習科學', sub:'教學設計核心', x:700, y:430, r:76, group:'core', detail:'把多媒體、任務設計、學生思考與評估整合，核心目標是讓學習資源用在理解，而不是浪費在形式工作上。' },
+      { id:'dual', label:'多通道學習', sub:'聲音 × 畫面 × 文字', x:420, y:190, r:62, group:'media', detail:'同時運用視覺與聽覺通道，但必須避免資訊重複與分散。文字、圖像與口語應接近並協同。' },
+      { id:'memory', label:'工作記憶', sub:'容量有限', x:430, y:420, r:62, group:'risk', detail:'學生一次可處理的資訊有限，所以需要分段、聚焦與減少同時處理的元素數量。' },
+      { id:'concrete', label:'具體例子', sub:'學生熟悉區', x:410, y:670, r:58, group:'media', detail:'抽象概念應先透過學生熟悉、容易想像的例子建立表徵，再過渡到一般化規則。' },
+      { id:'animation', label:'動畫表徵', sub:'呈現過程', x:760, y:175, r:58, group:'media', detail:'動畫最適合表達過程、變化、流動與因果，但要聚焦於關鍵變化，而不是裝飾效果。' },
+      { id:'extraneous', label:'無意義工作', sub:'外在負荷', x:740, y:690, r:58, group:'risk', detail:'如抄寫、找資訊、混亂協調等，都會消耗認知資源卻不直接促進理解。' },
+      { id:'generative', label:'生成性學習', sub:'學生要產出', x:1020, y:250, r:62, group:'generate', detail:'學生要自己解釋、整理、比較、畫圖、連線，才更可能形成深層理解。' },
+      { id:'conceptmap', label:'概念圖', sub:'節點與關係', x:1090, y:470, r:56, group:'generate', detail:'概念圖能讓學生把概念整理成節點與關係詞，外顯他們的知識結構。' },
+      { id:'collab', label:'合作學習', sub:'需設計任務', x:1010, y:690, r:58, group:'collaborate', detail:'合作學習本身不保證有效，若缺乏清晰角色和步驟，容易產生高協調成本。' },
+      { id:'assessment', label:'評估', sub:'看理解與遷移', x:1230, y:470, r:58, group:'assess', detail:'評估應觀察學生是否能解釋關係、重建概念、應用到新情境，而不只看是否完成任務。' }
+    ];
+
+    const links = [
+      { source:'core', target:'dual', label:'依賴' },
+      { source:'core', target:'memory', label:'受限於' },
+      { source:'core', target:'generative', label:'強調' },
+      { source:'core', target:'assessment', label:'需要' },
+      { source:'dual', target:'memory', label:'必須符合' },
+      { source:'dual', target:'animation', label:'可透過' },
+      { source:'dual', target:'extraneous', label:'若失衡會增加' },
+      { source:'memory', target:'extraneous', label:'容易被佔用於' },
+      { source:'concrete', target:'memory', label:'有助降低' },
+      { source:'concrete', target:'generative', label:'可作為起點支持' },
+      { source:'animation', target:'concrete', label:'可強化' },
+      { source:'animation', target:'extraneous', label:'若過量會增加' },
+      { source:'generative', target:'conceptmap', label:'常見形式' },
+      { source:'generative', target:'assessment', label:'可作為證據' },
+      { source:'collab', target:'extraneous', label:'若設計差會增加' },
+      { source:'collab', target:'generative', label:'若設計好可支持' },
+      { source:'assessment', target:'conceptmap', label:'可以評量' },
+      { source:'assessment', target:'memory', label:'可回饋是否超載' }
+    ];
+
+    let nodes = JSON.parse(JSON.stringify(initialNodes));
+    const nodeMap = new Map();
+    const nodeEls = new Map();
+    const edgeEls = [];
+    const nodeToEdges = new Map();
+    let rafId = null;
+    let dirtyNodeIds = new Set();
+
+    function createSVG(tag, attrs = {}) {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+      Object.entries(attrs).forEach(([k,v]) => el.setAttribute(k, v));
+      return el;
+    }
+
+    function buildGraph() {
+      edgesG.innerHTML = '';
+      edgeLabelsG.innerHTML = '';
+      nodesG.innerHTML = '';
+      nodeMap.clear();
+      nodeEls.clear();
+      edgeEls.length = 0;
+      nodeToEdges.clear();
+
+      nodes.forEach(node => nodeMap.set(node.id, node));
+
+      links.forEach((link, index) => {
+        const path = createSVG('path', { class:'edge', id:`edge-${index}` });
+        path.style.color = getComputedStyle(document.documentElement).getPropertyValue('--text');
+        const label = createSVG('text', { class:'edge-label' });
+        label.textContent = link.label;
+        edgesG.appendChild(path);
+        edgeLabelsG.appendChild(label);
+        edgeEls.push({ link, path, label });
+        [link.source, link.target].forEach(id => {
+          if (!nodeToEdges.has(id)) nodeToEdges.set(id, []);
+          nodeToEdges.get(id).push(index);
+        });
+      });
+
+      nodes.forEach(node => {
+        const g = createSVG('g', { class:'node', transform:`translate(${node.x},${node.y})`, 'data-id':node.id, tabindex:'0', role:'button', 'aria-label':node.label });
+        const circle = createSVG('circle', { r:node.r, fill:colorMap[node.group] || 'var(--primary)' });
+        const title = createSVG('text', { class:'node-title', y: node.sub ? -6 : 2 });
+        title.textContent = node.label;
+        const sub = createSVG('text', { class:'node-sub', y: 18 });
+        sub.textContent = node.sub;
+        g.append(circle, title, sub);
+        g.addEventListener('click', () => showInfo(node));
+        g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showInfo(node); } });
+        enableDrag(g, node);
+        nodesG.appendChild(g);
+        nodeEls.set(node.id, g);
+      });
+
+      updateAllPositions();
+    }
+
+    function updateEdgeByIndex(index) {
+      const entry = edgeEls[index];
+      const s = nodeMap.get(entry.link.source);
+      const t = nodeMap.get(entry.link.target);
+      const angle = Math.atan2(t.y - s.y, t.x - s.x);
+      const sx = s.x + Math.cos(angle) * s.r;
+      const sy = s.y + Math.sin(angle) * s.r;
+      const tx = t.x - Math.cos(angle) * t.r;
+      const ty = t.y - Math.sin(angle) * t.r;
+      const mx = (sx + tx) / 2;
+      const my = (sy + ty) / 2;
+      const curve = Math.abs(sx - tx) > 260 ? 24 : 10;
+      const d = `M ${sx} ${sy} Q ${mx} ${my - curve} ${tx} ${ty}`;
+      entry.path.setAttribute('d', d);
+      entry.label.setAttribute('x', mx);
+      entry.label.setAttribute('y', my - curve - 12);
+    }
+
+    function updateNodePosition(nodeId) {
+      const node = nodeMap.get(nodeId);
+      const el = nodeEls.get(nodeId);
+      if (el) el.setAttribute('transform', `translate(${node.x},${node.y})`);
+    }
+
+    function updateAllPositions() {
+      nodes.forEach(node => updateNodePosition(node.id));
+      edgeEls.forEach((_, i) => updateEdgeByIndex(i));
+    }
+
+    function queueUpdate(nodeId) {
+      dirtyNodeIds.add(nodeId);
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        const edgeIndexes = new Set();
+        dirtyNodeIds.forEach(id => {
+          updateNodePosition(id);
+          (nodeToEdges.get(id) || []).forEach(edgeIdx => edgeIndexes.add(edgeIdx));
+        });
+        edgeIndexes.forEach(updateEdgeByIndex);
+        dirtyNodeIds.clear();
+        rafId = null;
+      });
+    }
+
+    function showInfo(node) {
+      panel.innerHTML = `
+        <h2>${node.label}</h2>
+        <p><strong>${node.sub}</strong></p>
+        <p>${node.detail}</p>
+        <ul>
+          ${links.filter(l => l.source === node.id || l.target === node.id).map(l => {
+            const other = l.source === node.id ? nodeMap.get(l.target) : nodeMap.get(l.source);
+            const relation = l.source === node.id ? `${node.label} ${l.label} ${other.label}` : `${other.label} ${l.label} ${node.label}`;
+            return `<li>${relation}</li>`;
+          }).join('')}
+        </ul>
+      `;
+    }
+
+    function enableDrag(element, node) {
+      let dragging = false;
+      let offsetX = 0, offsetY = 0;
+      const toSVGPoint = (clientX, clientY) => {
+        const pt = svg.createSVGPoint();
+        pt.x = clientX; pt.y = clientY;
+        return pt.matrixTransform(svg.getScreenCTM().inverse());
+      };
+      element.addEventListener('pointerdown', e => {
+        dragging = true;
+        element.classList.add('dragging');
+        const p = toSVGPoint(e.clientX, e.clientY);
+        offsetX = p.x - node.x;
+        offsetY = p.y - node.y;
+        element.setPointerCapture(e.pointerId);
+      });
+      element.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        const p = toSVGPoint(e.clientX, e.clientY);
+        node.x = p.x - offsetX;
+        node.y = p.y - offsetY;
+        queueUpdate(node.id);
+      });
+      element.addEventListener('pointerup', e => {
+        dragging = false;
+        element.classList.remove('dragging');
+        element.releasePointerCapture(e.pointerId);
+      });
+      element.addEventListener('pointercancel', () => {
+        dragging = false;
+        element.classList.remove('dragging');
+      });
+    }
+
+    document.querySelector('[data-theme-toggle]').addEventListener('click', () => {
+      const root = document.documentElement;
+      root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      edgeEls.forEach(entry => {
+        entry.path.style.color = getComputedStyle(document.documentElement).getPropertyValue('--text');
+      });
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      nodes = JSON.parse(JSON.stringify(initialNodes));
+      buildGraph();
+      panel.innerHTML = `<h2>已重置</h2><p><strong>節點位置已回復預設。</strong></p><p>這一版已改用較輕量的拖曳更新方式，拖動時只重畫被影響的節點與連線，所以會順暢得多。</p>`;
+    });
+
+    buildGraph();
+  </script>
+</body>
+</html>
