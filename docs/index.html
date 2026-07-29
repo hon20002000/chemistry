@@ -4,21 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>化學互動教材站</title>
-  <meta name="description" content="高中化學互動教材首頁，整合約 30 個章節的簡報、互動活動與章節入口。" />
+  <meta name="description" content="高中化學互動教材網站首頁，採用左側導航與右側內容的課程網站版型。" />
   <style>
     :root {
       --bg: #f5f7fb;
+      --sidebar: #163046;
+      --sidebar-soft: #1d3c57;
       --surface: #ffffff;
-      --surface-soft: #eef6f5;
-      --text: #1f2937;
+      --surface-soft: #f7fafc;
+      --text: #243447;
       --muted: #6b7280;
+      --line: #dce5ee;
       --primary: #0f766e;
-      --primary-dark: #115e59;
-      --line: #d9e2ec;
-      --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-      --radius-lg: 18px;
-      --radius-md: 14px;
-      --max-width: 1180px;
+      --accent: #dff7f4;
+      --shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+      --radius: 16px;
     }
 
     * { box-sizing: border-box; }
@@ -26,68 +26,137 @@
     body {
       margin: 0;
       font-family: "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
-      background: var(--bg);
       color: var(--text);
+      background: var(--bg);
       line-height: 1.65;
     }
 
     a { color: inherit; }
-    .wrap {
-      width: min(var(--max-width), 92%);
-      margin: 0 auto;
+
+    .layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      min-height: 100vh;
     }
 
-    header {
-      background: linear-gradient(135deg, #0f766e, #155e75);
-      color: #fff;
-      padding: 28px 0 82px;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 36px;
+    .sidebar {
+      position: sticky;
+      top: 0;
+      align-self: start;
+      height: 100vh;
+      overflow-y: auto;
+      background: linear-gradient(180deg, var(--sidebar) 0%, #12293c 100%);
+      color: #eef6fb;
+      padding: 26px 22px 34px;
+      border-right: 1px solid rgba(255,255,255,0.08);
     }
 
     .brand {
-      font-size: 1.2rem;
-      font-weight: 800;
-      letter-spacing: 0.02em;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
     }
 
-    .nav {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
+    .brand h1 {
+      margin: 0 0 8px;
+      font-size: 1.28rem;
+      line-height: 1.25;
     }
 
-    .nav a {
+    .brand p {
+      margin: 0;
+      color: rgba(238,246,251,0.78);
+      font-size: 0.95rem;
+    }
+
+    .sidebar-section {
+      margin-top: 22px;
+    }
+
+    .sidebar-title {
+      margin: 0 0 10px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(238,246,251,0.62);
+    }
+
+    .sidebar-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar-list li + li {
+      margin-top: 8px;
+    }
+
+    .sidebar-list a {
+      display: block;
       text-decoration: none;
+      padding: 10px 12px;
+      border-radius: 12px;
       color: rgba(255,255,255,0.92);
+      background: transparent;
+      transition: 0.18s ease;
       font-size: 0.96rem;
     }
 
-    .hero {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 26px;
-      align-items: center;
+    .sidebar-list a:hover,
+    .sidebar-list a.active {
+      background: rgba(255,255,255,0.08);
     }
 
-    .hero h1 {
-      margin: 0 0 14px;
-      font-size: clamp(2rem, 3.8vw, 3.5rem);
-      line-height: 1.12;
+    .chapter-list a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chapter-list span {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.72);
+      white-space: nowrap;
+    }
+
+    .main {
+      padding: 34px 34px 64px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #ffffff 0%, #f4fbfa 100%);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: var(--primary);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .hero h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.9rem, 3vw, 3rem);
+      line-height: 1.15;
     }
 
     .hero p {
       margin: 0 0 18px;
-      max-width: 44rem;
-      color: rgba(255,255,255,0.95);
-      font-size: 1.02rem;
+      color: #496072;
+      max-width: 52rem;
     }
 
     .hero-actions {
@@ -98,113 +167,117 @@
 
     .btn {
       display: inline-block;
-      padding: 12px 18px;
-      border-radius: 12px;
       text-decoration: none;
+      padding: 11px 16px;
+      border-radius: 12px;
       font-weight: 700;
     }
 
     .btn-primary {
-      background: #fff;
-      color: var(--primary-dark);
+      background: var(--primary);
+      color: white;
     }
 
     .btn-secondary {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.28);
-      color: #fff;
-    }
-
-    .hero-panel {
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 22px;
-      padding: 22px;
-      backdrop-filter: blur(6px);
-    }
-
-    .hero-panel h2 {
-      margin-top: 0;
-      font-size: 1.15rem;
-    }
-
-    .hero-panel ul {
-      margin: 0;
-      padding-left: 1.15rem;
-    }
-
-    main {
-      margin-top: -42px;
-      padding-bottom: 70px;
-    }
-
-    section.block {
-      background: var(--surface);
+      background: white;
       border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow);
-      padding: 26px;
+      color: var(--text);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
       margin-top: 24px;
     }
 
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
     }
 
-    .section-head h2 {
-      margin: 0;
-      font-size: 1.55rem;
+    .panel h3 {
+      margin: 0 0 10px;
+      font-size: 1.25rem;
     }
 
-    .section-head p {
-      margin: 6px 0 0;
+    .panel p {
+      margin: 0 0 14px;
       color: var(--muted);
+    }
+
+    .quick-links {
+      display: grid;
+      gap: 12px;
+    }
+
+    .quick-links a {
+      display: block;
+      text-decoration: none;
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-weight: 700;
+    }
+
+    .quick-links small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .section {
+      margin-top: 24px;
+    }
+
+    .section h3 {
+      margin: 0 0 12px;
+      font-size: 1.3rem;
     }
 
     .chapter-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
     }
 
     .chapter-card {
+      background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: var(--radius-md);
+      border-radius: 16px;
       padding: 18px;
-      background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      box-shadow: var(--shadow);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
 
     .chapter-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
-      border-color: #c7d6e3;
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
     }
 
     .chapter-no {
       display: inline-block;
+      margin-bottom: 10px;
       padding: 4px 10px;
       border-radius: 999px;
-      background: var(--surface-soft);
-      color: var(--primary-dark);
       font-size: 0.82rem;
       font-weight: 700;
-      margin-bottom: 10px;
+      color: var(--primary);
+      background: var(--accent);
     }
 
-    .chapter-card h3 {
+    .chapter-card h4 {
       margin: 0 0 8px;
-      font-size: 1.08rem;
-      line-height: 1.35;
+      font-size: 1.04rem;
     }
 
     .chapter-card p {
-      margin: 0 0 14px;
+      margin: 0 0 12px;
       color: var(--muted);
       font-size: 0.95rem;
       min-height: 3.1em;
@@ -216,185 +289,176 @@
       font-weight: 700;
     }
 
-    .tips {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .tip {
-      background: #fbfcfe;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      padding: 18px;
-    }
-
-    .tip h3 {
-      margin-top: 0;
-      font-size: 1.02rem;
-    }
-
-    footer {
-      border-top: 1px solid var(--line);
-      padding: 26px 0 40px;
+    .info-list {
+      margin: 0;
+      padding-left: 1.2rem;
       color: var(--muted);
-      font-size: 0.95rem;
     }
 
-    code {
-      background: #edf2f7;
-      padding: 2px 6px;
-      border-radius: 6px;
-      font-family: Consolas, monospace;
+    .footer-note {
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 0.94rem;
     }
 
-    @media (max-width: 920px) {
-      .hero,
-      .tips {
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+      }
+
+      .grid-2 {
         grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <div class="topbar">
-        <div class="brand">化學互動教材站</div>
-        <nav class="nav">
-          <a href="#chapters">章節總覽</a>
-          <a href="#featured">重點章節</a>
-          <a href="#usage">使用方式</a>
-        </nav>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <h1>化學互動教材站</h1>
+        <p>GitHub Pages 首頁 · 左側課程導航版型</p>
       </div>
 
-      <div class="hero">
-        <div>
-          <h1>高中化學章節式互動教材首頁</h1>
-          <p>這個首頁設計成整個教材站的總入口，適合管理約 30 個章節。每個 chapter 都可以連到它自己的 <code>index.html</code>，再由章節頁分流到簡報、活動、自測和補充教材。</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#chapters">查看全部章節</a>
-            <a class="btn btn-secondary" href="#featured">先看已完成章節</a>
-          </div>
-        </div>
+      <section class="sidebar-section">
+        <h2 class="sidebar-title">網站導覽</h2>
+        <ul class="sidebar-list">
+          <li><a class="active" href="#home">首頁說明</a></li>
+          <li><a href="#chapters">章節總覽</a></li>
+          <li><a href="#ready">已建立章節</a></li>
+          <li><a href="#notes">使用建議</a></li>
+        </ul>
+      </section>
 
-        <aside class="hero-panel">
-          <h2>建議架構</h2>
-          <ul>
-            <li>首頁只負責總導航與章節入口</li>
-            <li>每章有自己的 <code>index.html</code></li>
-            <li>章節頁內再放 slides、activity、quiz</li>
-            <li>全站圖片、CSS、JS 集中到 <code>assets</code></li>
+      <section class="sidebar-section">
+        <h2 class="sidebar-title">已建立章節</h2>
+        <ul class="sidebar-list chapter-list">
+          <li><a href="./chapter-05-atomic-structure/"><strong>Chapter 05</strong><span>Atomic</span></a></li>
+          <li><a href="./chapter-07-ionic-bond/"><strong>Chapter 07</strong><span>Ionic</span></a></li>
+          <li><a href="./chapter-08-covalent-bond/"><strong>Chapter 08</strong><span>Covalent</span></a></li>
+        </ul>
+      </section>
+
+      <section class="sidebar-section">
+        <h2 class="sidebar-title">章節預留</h2>
+        <ul class="sidebar-list">
+          <li><a href="#chapters">Chapter 01 - 04</a></li>
+          <li><a href="#chapters">Chapter 06</a></li>
+          <li><a href="#chapters">Chapter 09 - 30</a></li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="main">
+      <section class="hero" id="home">
+        <span class="eyebrow">Lesson-style Home Page</span>
+        <h2>用左側導航管理整個化學教材站</h2>
+        <p>這個首頁參考 lesson-template 的核心思路：左側放課程導航與章節入口，右側放首頁說明、重點章節、更新資訊與教材使用方式。這類 sidebar 版型很適合 lesson / workshop / documentation 網站，也適合你的 chapter 式教材站。[web:315]</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#chapters">查看全部章節</a>
+          <a class="btn btn-secondary" href="#ready">查看已建立章節</a>
+        </div>
+      </section>
+
+      <div class="grid-2">
+        <section class="panel">
+          <h3>首頁定位</h3>
+          <p>首頁不需要承載所有內容，而是作為整個網站的總入口。每章各自有自己的 <code>index.html</code>，首頁只需負責清楚導航，這正符合 lesson-template 那種以 sidebar 提供結構化導覽的設計方向。[web:315]</p>
+          <ul class="info-list">
+            <li>左側：固定導航、章節入口、快速跳轉。</li>
+            <li>右側：首頁介紹、已建立章節、使用說明。</li>
+            <li>每章：獨立 index.html，再連到 slides、activity、quiz。</li>
           </ul>
-        </aside>
-      </div>
-    </div>
-  </header>
+        </section>
 
-  <main>
-    <div class="wrap">
-      <section class="block" id="featured">
-        <div class="section-head">
-          <div>
-            <h2>目前已建立章節</h2>
-            <p>以下連結已對應你現有資料夾命名，可直接連到正確的 chapter 首頁。</p>
+        <section class="panel">
+          <h3>快速入口</h3>
+          <div class="quick-links">
+            <a href="./chapter-05-atomic-structure/">Chapter 05 · Atomic Structure<small>進入原子結構章節首頁</small></a>
+            <a href="./chapter-07-ionic-bond/">Chapter 07 · Ionic Bond<small>進入離子鍵章節首頁</small></a>
+            <a href="./chapter-08-covalent-bond/">Chapter 08 · Covalent Bond<small>進入共價鍵章節首頁</small></a>
           </div>
-        </div>
+        </section>
+      </div>
 
+      <section class="section" id="ready">
+        <h3>已建立章節</h3>
         <div class="chapter-grid">
           <article class="chapter-card">
             <div class="chapter-no">Chapter 05</div>
-            <h3>Atomic Structure</h3>
-            <p>原子結構相關教材入口，可放本章簡報、互動頁與練習。</p>
+            <h4>Atomic Structure</h4>
+            <p>可放原子模型、原子結構、粒子概念、圖像化講解與練習活動。</p>
             <a href="./chapter-05-atomic-structure/">進入本章</a>
           </article>
-
           <article class="chapter-card">
             <div class="chapter-no">Chapter 07</div>
-            <h3>Ionic Bond</h3>
-            <p>離子鍵教材入口，可整理離子形成、鍵結概念與圖像化資源。</p>
+            <h4>Ionic Bond</h4>
+            <p>可放離子形成、電子轉移、化學鍵比較與例題說明。</p>
             <a href="./chapter-07-ionic-bond/">進入本章</a>
           </article>
-
           <article class="chapter-card">
             <div class="chapter-no">Chapter 08</div>
-            <h3>Covalent Bond</h3>
-            <p>共價鍵教材入口，可放分子結構、路易斯結構與相關互動頁。</p>
+            <h4>Covalent Bond</h4>
+            <p>可放共價鍵、電子共享、分子結構與路易斯結構內容。</p>
             <a href="./chapter-08-covalent-bond/">進入本章</a>
           </article>
         </div>
       </section>
 
-      <section class="block" id="chapters">
-        <div class="section-head">
-          <div>
-            <h2>30 個章節總覽</h2>
-            <p>這區可作為全學年章節導航。已建立的章節可直接連結，未建立的章節先保留為預留位置。</p>
-          </div>
-        </div>
-
+      <section class="section" id="chapters">
+        <h3>章節總覽</h3>
         <div class="chapter-grid">
-          <article class="chapter-card"><div class="chapter-no">Chapter 01</div><h3>Chapter 01</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 02</div><h3>Chapter 02</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 03</div><h3>Chapter 03</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 04</div><h3>Chapter 04</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 05</div><h3>Atomic Structure</h3><p>已建立，連往 chapter-05-atomic-structure 的首頁。</p><a href="./chapter-05-atomic-structure/">進入本章</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 06</div><h3>Chapter 06</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 07</div><h3>Ionic Bond</h3><p>已建立，連往 chapter-07-ionic-bond 的首頁。</p><a href="./chapter-07-ionic-bond/">進入本章</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 08</div><h3>Covalent Bond</h3><p>已建立，連往 chapter-08-covalent-bond 的首頁。</p><a href="./chapter-08-covalent-bond/">進入本章</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 09</div><h3>Chapter 09</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 10</div><h3>Chapter 10</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 11</div><h3>Chapter 11</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 12</div><h3>Chapter 12</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 13</div><h3>Chapter 13</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 14</div><h3>Chapter 14</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 15</div><h3>Chapter 15</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 16</div><h3>Chapter 16</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 17</div><h3>Chapter 17</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 18</div><h3>Chapter 18</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 19</div><h3>Chapter 19</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 20</div><h3>Chapter 20</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 21</div><h3>Chapter 21</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 22</div><h3>Chapter 22</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 23</div><h3>Chapter 23</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 24</div><h3>Chapter 24</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 25</div><h3>Chapter 25</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 26</div><h3>Chapter 26</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 27</div><h3>Chapter 27</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 28</div><h3>Chapter 28</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 29</div><h3>Chapter 29</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
-          <article class="chapter-card"><div class="chapter-no">Chapter 30</div><h3>Chapter 30</h3><p>預留章節位置，之後建立對應資料夾後可補上連結。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 01</div><h4>Chapter 01</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 02</div><h4>Chapter 02</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 03</div><h4>Chapter 03</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 04</div><h4>Chapter 04</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 05</div><h4>Atomic Structure</h4><p>已建立章節首頁。</p><a href="./chapter-05-atomic-structure/">進入本章</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 06</div><h4>Chapter 06</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 07</div><h4>Ionic Bond</h4><p>已建立章節首頁。</p><a href="./chapter-07-ionic-bond/">進入本章</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 08</div><h4>Covalent Bond</h4><p>已建立章節首頁。</p><a href="./chapter-08-covalent-bond/">進入本章</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 09</div><h4>Chapter 09</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 10</div><h4>Chapter 10</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 11</div><h4>Chapter 11</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 12</div><h4>Chapter 12</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 13</div><h4>Chapter 13</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 14</div><h4>Chapter 14</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 15</div><h4>Chapter 15</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 16</div><h4>Chapter 16</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 17</div><h4>Chapter 17</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 18</div><h4>Chapter 18</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 19</div><h4>Chapter 19</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 20</div><h4>Chapter 20</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 21</div><h4>Chapter 21</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 22</div><h4>Chapter 22</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 23</div><h4>Chapter 23</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 24</div><h4>Chapter 24</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 25</div><h4>Chapter 25</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 26</div><h4>Chapter 26</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 27</div><h4>Chapter 27</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 28</div><h4>Chapter 28</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 29</div><h4>Chapter 29</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
+          <article class="chapter-card"><div class="chapter-no">Chapter 30</div><h4>Chapter 30</h4><p>預留章節位置。</p><a href="#">稍後加入</a></article>
         </div>
       </section>
 
-      <section class="block" id="usage">
-        <div class="section-head">
-          <div>
-            <h2>使用與維護方式</h2>
-            <p>這種首頁適合之後不斷增加 chapter，而且不需要每次大改整站架構。</p>
-          </div>
+      <section class="section" id="notes">
+        <div class="panel">
+          <h3>維護建議</h3>
+          <p>Learn-Static 的 lesson-template 是以 sidebar 導航作為網站核心，並強調 lesson / workshop / documentation 類型內容的清楚分段與結構化頁面。[web:315]</p>
+          <ul class="info-list">
+            <li>首頁維持穩定，不需要每次加入很多教學內容。</li>
+            <li>每新增一個 chapter，只需新建資料夾與章節首頁，再補一個連結。</li>
+            <li>若之後章節變多，可把左側導航再拆成「上學期 / 下學期」或「基礎 / 鍵結 / 計算 / 平衡」四組。</li>
+          </ul>
         </div>
-
-        <div class="tips">
-          <div class="tip">
-            <h3>首頁負責導航</h3>
-            <p>首頁只列出章節卡片，不放太多細節，讓學生一進來就可以直接按 chapter。</p>
-          </div>
-          <div class="tip">
-            <h3>章節頁負責內容</h3>
-            <p>每章的 <code>index.html</code> 再分流到 slides、activity、quiz、FAQ 與補充教材。</p>
-          </div>
-          <div class="tip">
-            <h3>命名維持一致</h3>
-            <p>建議每個資料夾都用固定命名方式，例如 <code>chapter-09-something</code>，之後首頁只需補上連結。</p>
-          </div>
-        </div>
+        <p class="footer-note">目前已按你現有資料夾名稱接好 Chapter 05、07、08；之後只要持續補相同命名規則即可。</p>
       </section>
-    </div>
-  </main>
-
-  <footer>
-    <div class="wrap">化學互動教材站 · GitHub Pages 首頁範本 · 已按你目前的資料夾命名方式接好 Chapter 05、07、08。</div>
-  </footer>
+    </main>
+  </div>
 </body>
 </html>
