@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chapter 07｜金屬鍵、離子與離子鍵</title>
-  <meta name="description" content="第七章化學教材頁，包含金屬鍵、離子形成、離子鍵、命名、化學式、自我測驗與延遲複習。" />
+  <title>Chapter 07｜老師易編輯版</title>
+  <meta name="description" content="第七章老師易編輯版教材頁，預留 Markdown 與 HTML 內容插槽，方便加入題目、概念說明與小動畫。" />
   <style>
     :root {
       --bg: #f4f7fb;
@@ -16,12 +16,13 @@
       --primary: #0f766e;
       --primary-dark: #115e59;
       --primary-soft: #def7f3;
-      --warning-soft: #fff4db;
-      --danger-soft: #fde9e7;
+      --accent: #eef6ff;
+      --warning-soft: #fff8e7;
+      --embed-soft: #f8fafc;
       --shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
       --radius-lg: 20px;
       --radius-md: 14px;
-      --sidebar-w: 300px;
+      --sidebar-w: 310px;
     }
 
     * { box-sizing: border-box; }
@@ -35,6 +36,16 @@
     }
 
     a { color: inherit; }
+    code, pre {
+      font-family: Consolas, "Courier New", monospace;
+    }
+
+    code {
+      background: #edf2f7;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
     .layout {
       display: grid;
       grid-template-columns: var(--sidebar-w) 1fr;
@@ -46,7 +57,7 @@
       top: 0;
       height: 100vh;
       overflow-y: auto;
-      padding: 26px 20px 36px;
+      padding: 24px 20px 36px;
       background: linear-gradient(180deg, #163046, #11293c);
       color: #eef6fb;
       border-right: 1px solid rgba(255,255,255,0.08);
@@ -65,7 +76,7 @@
     }
 
     .side-block {
-      margin-top: 24px;
+      margin-top: 22px;
       padding-top: 18px;
       border-top: 1px solid rgba(255,255,255,0.12);
     }
@@ -75,7 +86,7 @@
       font-size: 0.82rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: rgba(238,246,251,0.64);
+      color: rgba(238,246,251,0.62);
     }
 
     .side-nav,
@@ -94,25 +105,28 @@
       text-decoration: none;
       padding: 10px 12px;
       border-radius: 12px;
-      color: rgba(255,255,255,0.92);
-      background: transparent;
+      color: rgba(255,255,255,0.94);
       transition: background 0.18s ease;
-      font-size: 0.95rem;
     }
 
     .side-nav a:hover,
     .mini-list a:hover { background: rgba(255,255,255,0.08); }
 
     .content {
-      padding: 32px 34px 70px;
+      padding: 30px 34px 80px;
+    }
+
+    .hero,
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
     }
 
     .hero {
-      background: linear-gradient(135deg, #ffffff, #f2fbfa);
-      border: 1px solid var(--line);
-      border-radius: 24px;
       padding: 30px;
-      box-shadow: var(--shadow);
+      background: linear-gradient(135deg, #ffffff, #f4fbfa);
       margin-bottom: 24px;
     }
 
@@ -128,255 +142,185 @@
     }
 
     .hero h2 {
-      margin: 0 0 12px;
-      font-size: clamp(2rem, 3.4vw, 3rem);
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 3.2vw, 2.9rem);
       line-height: 1.15;
     }
 
     .hero p {
-      margin: 0 0 14px;
-      color: #486072;
-      max-width: 58rem;
+      margin: 0 0 12px;
+      color: #506577;
+      max-width: 60rem;
     }
-
-    .goal-grid,
-    .card-grid,
-    .quiz-grid,
-    .review-grid {
-      display: grid;
-      gap: 16px;
-    }
-
-    .goal-grid { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
-    .card-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
-    .quiz-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-    .review-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 
     .section {
       margin-top: 24px;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
       padding: 24px;
-      box-shadow: var(--shadow);
     }
 
     .section h3 {
       margin: 0 0 10px;
-      font-size: 1.5rem;
+      font-size: 1.45rem;
     }
 
     .section-lead {
-      margin: 0 0 18px;
+      margin: 0 0 16px;
       color: var(--muted);
     }
 
-    .goal,
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+    }
+
+    .card-grid,
+    .slot-grid,
+    .name-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .card-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .slot-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .name-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+
     .card,
-    .quiz-card,
-    .review-card,
-    .example-step,
-    .error-card,
-    .practice-item {
+    .slot,
+    .edit-box,
+    .example-box,
+    .name-box {
       border: 1px solid var(--line);
       border-radius: var(--radius-md);
       padding: 18px;
       background: #fff;
     }
 
-    .goal {
-      background: linear-gradient(180deg, #fff, #f8fbfd);
-    }
-
-    .goal strong,
     .card strong,
-    .review-card strong {
+    .slot strong,
+    .edit-box strong,
+    .name-box strong {
       display: block;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       color: var(--primary-dark);
     }
 
-    .warmup-list,
-    .info-list,
-    .check-list,
-    .practice-list,
-    .error-list {
-      margin: 0;
-      padding-left: 1.2rem;
+    .slot {
+      background: linear-gradient(180deg, #fff, #f9fbfd);
+    }
+
+    .slot-label {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: var(--accent);
+      color: #35506b;
+    }
+
+    .md-zone,
+    .html-zone {
+      border: 1px dashed #b8c9da;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 12px;
+      background: var(--embed-soft);
+    }
+
+    .md-zone::before,
+    .html-zone::before {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+
+    .md-zone::before { content: "MARKDOWN SLOT"; }
+    .html-zone::before { content: "HTML SLOT"; }
+
+    .placeholder {
+      color: var(--muted);
+      font-size: 0.95rem;
     }
 
     .concept-flow {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 12px;
-      margin-top: 18px;
+      margin-top: 16px;
     }
 
     .flow-box {
       border: 1px solid var(--line);
-      background: var(--surface-soft);
       border-radius: 14px;
-      padding: 16px;
-      font-weight: 700;
+      background: var(--surface-soft);
+      padding: 14px;
       text-align: center;
+      font-weight: 700;
       position: relative;
     }
 
     .flow-box::after {
       content: "→";
       position: absolute;
-      right: -11px;
+      right: -10px;
       top: 50%;
       transform: translateY(-50%);
       color: var(--muted);
-      font-size: 1.15rem;
     }
 
     .flow-box:last-child::after { content: ""; }
 
-    .split {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 18px;
+    .tip-list,
+    .check-list {
+      margin: 0;
+      padding-left: 1.2rem;
     }
 
-    .particle-box {
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      padding: 18px;
-      background: linear-gradient(180deg, #ffffff, #f8fbfd);
-    }
-
-    .particle-visual {
-      margin-top: 14px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .atom,
-    .ion {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      font-weight: 800;
-      border: 2px solid var(--line);
-      background: white;
-      padding: 10px;
-    }
-
-    .ion {
-      background: var(--primary-soft);
-      border-color: #b6e6df;
-      color: var(--primary-dark);
-    }
-
-    .transfer {
-      font-size: 1.6rem;
-      color: var(--primary);
-      font-weight: 800;
-    }
-
-    .metal-sea {
-      border-radius: 16px;
-      padding: 18px;
-      background:
-        radial-gradient(circle at 15% 20%, rgba(15,118,110,0.18) 0 18px, transparent 19px),
-        radial-gradient(circle at 50% 40%, rgba(15,118,110,0.18) 0 18px, transparent 19px),
-        radial-gradient(circle at 80% 25%, rgba(15,118,110,0.18) 0 18px, transparent 19px),
-        radial-gradient(circle at 28% 75%, rgba(15,118,110,0.18) 0 18px, transparent 19px),
-        radial-gradient(circle at 68% 78%, rgba(15,118,110,0.18) 0 18px, transparent 19px),
-        linear-gradient(180deg, #f7fcfb, #edf8f6);
-      border: 1px solid #cde8e3;
-    }
-
-    .metal-sea p { margin: 0; }
-
-    .step-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-      margin-top: 16px;
-    }
-
-    .step-no {
-      display: inline-block;
-      margin-bottom: 8px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: var(--primary-soft);
-      color: var(--primary-dark);
-      font-size: 0.82rem;
-      font-weight: 700;
-    }
-
-    .error-card {
-      background: linear-gradient(180deg, #fff, #fff7f6);
-    }
-
-    .error-card strong {
-      color: #a9473d;
-    }
-
-    .practice-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 14px;
-    }
-
-    .tag {
-      display: inline-block;
-      margin-bottom: 8px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      background: var(--warning-soft);
-      color: #8a5b00;
-    }
-
-    .quiz-card {
-      background: linear-gradient(180deg, #fff, #f9fbfd);
-    }
-
-    .quiz-card details {
-      margin-top: 10px;
-    }
-
-    .quiz-card summary {
-      cursor: pointer;
-      color: var(--primary);
-      font-weight: 700;
-    }
-
-    .review-card {
+    .example-box {
       background: linear-gradient(180deg, #fff, #f6fbfa);
+    }
+
+    .edit-box {
+      background: linear-gradient(180deg, #fff, #fffaf0);
+    }
+
+    .edit-box pre {
+      margin: 10px 0 0;
+      padding: 12px;
+      overflow: auto;
+      border-radius: 12px;
+      background: #0f172a;
+      color: #e5edf6;
+      font-size: 0.9rem;
+    }
+
+    .name-box {
+      background: linear-gradient(180deg, #fff, #f8fbfd);
     }
 
     .back-home {
       display: inline-block;
-      margin-top: 16px;
+      margin-top: 18px;
       text-decoration: none;
       color: var(--primary);
       font-weight: 700;
     }
 
-    code {
-      background: #edf2f7;
-      padding: 2px 6px;
-      border-radius: 6px;
-      font-family: Consolas, monospace;
-    }
-
     @media (max-width: 1100px) {
       .concept-flow { grid-template-columns: 1fr; }
-      .flow-box::after { content: "↓"; right: auto; left: 50%; top: auto; bottom: -17px; transform: translateX(-50%); }
+      .flow-box::after {
+        content: "↓";
+        right: auto;
+        left: 50%;
+        top: auto;
+        bottom: -17px;
+        transform: translateX(-50%);
+      }
       .flow-box:last-child::after { content: ""; }
     }
 
@@ -384,7 +328,7 @@
       .layout { grid-template-columns: 1fr; }
       .sidebar { position: static; height: auto; }
       .content { padding: 20px; }
-      .split { grid-template-columns: 1fr; }
+      .two-col { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -392,245 +336,246 @@
   <div class="layout">
     <aside class="sidebar">
       <h1>Chapter 07</h1>
-      <p>金屬鍵、離子與離子鍵</p>
+      <p>老師易編輯版 · 支援 Markdown / HTML 內嵌</p>
 
       <div class="side-block">
         <h2>頁面導航</h2>
         <ul class="side-nav">
           <li><a href="#overview">本章導覽</a></li>
-          <li><a href="#warmup">提取練習</a></li>
-          <li><a href="#concept-map">概念流程</a></li>
-          <li><a href="#particles">粒子圖解</a></li>
-          <li><a href="#examples">分步例題</a></li>
-          <li><a href="#mistakes">常見錯誤</a></li>
-          <li><a href="#naming">命名與化學式</a></li>
-          <li><a href="#applications">現象與應用</a></li>
-          <li><a href="#quiz">自我測驗</a></li>
-          <li><a href="#review">延遲複習</a></li>
+          <li><a href="#slots">內容插槽</a></li>
+          <li><a href="#concept">概念流程</a></li>
+          <li><a href="#question-bank">題目區設計</a></li>
+          <li><a href="#animation">動畫模組</a></li>
+          <li><a href="#naming-guide">命名建議</a></li>
+          <li><a href="#edit-guide">編輯方式</a></li>
         </ul>
       </div>
 
       <div class="side-block">
-        <h2>本章重點</h2>
+        <h2>建議原則</h2>
         <ul class="mini-list">
-          <li><a href="#particles">金屬鍵與電子海</a></li>
-          <li><a href="#particles">陽離子與陰離子</a></li>
-          <li><a href="#examples">電子轉移與離子鍵</a></li>
-          <li><a href="#naming">名稱與化學式</a></li>
-          <li><a href="#applications">離子顏色與遷移</a></li>
+          <li><a href="#slots">Markdown 管文字</a></li>
+          <li><a href="#question-bank">HTML 管互動題</a></li>
+          <li><a href="#animation">HTML/CSS/JS 管動畫</a></li>
         </ul>
       </div>
 
       <div class="side-block">
         <h2>返回網站</h2>
         <ul class="mini-list">
-          <li><a href="../index.html">← 回到首頁</a></li>
+          <li><a href="../index.html">← 回到教材首頁</a></li>
         </ul>
       </div>
     </aside>
 
     <main class="content">
       <section class="hero" id="overview">
-        <span class="eyebrow">Lesson Page</span>
-        <h2>第七章｜金屬鍵、離子與離子鍵</h2>
-        <p>這一頁不是把課本整章搬上網，而是把你在課堂中已講授的內容重新整理成「可提取、可理解、可練習、可回顧」的學習頁。章節內容涵蓋金屬鍵、由原子生成離子、離子鍵和離子化合物、離子的名稱和化學式、離子化合物的名稱和化學式，以及離子的顏色和遷移。[file:344]</p>
-        <p>本頁的結構依照學習科學常見原則設計：先做提取練習，再建立概念流程，再用粒子圖與分步例題幫學生理解，最後用自我測驗與延遲複習幫學生真正學會。[web:329][web:330][web:332]</p>
+        <span class="eyebrow">Teacher Editable Chapter Page</span>
+        <h2>第七章｜可插入 Markdown 與 HTML 的章節頁</h2>
+        <p>這個版本不是只給學生看，也同時是給你維護內容用的章節模板。頁面保留固定版面，但每個教學區塊都明確標示哪些地方適合用 Markdown 寫概念、題目與提示，哪些地方適合用 HTML 放互動題、答案展開區或小動畫。[web:348][web:365]</p>
+        <p>對你這類化學教材站來說，最好的做法是把說明文字與題幹交給 Markdown 管理，把互動展示與概念動畫交給 HTML/CSS/JavaScript 管理，這樣修改內容時最方便，也不容易破壞版面。[web:349][web:356][web:367][web:370]</p>
       </section>
 
-      <section class="section">
-        <h3>本章學習目標</h3>
-        <p class="section-lead">學生完成這一章後，應能同時處理粒子層次、符號層次與現象層次，而不是只會背名稱。[file:344]</p>
-        <div class="goal-grid">
-          <div class="goal"><strong>理解結構</strong>能解釋金屬鍵、電子海與離子鍵的本質。</div>
-          <div class="goal"><strong>判斷生成</strong>能由電子排佈推斷原子會形成哪種離子。</div>
-          <div class="goal"><strong>掌握符號</strong>能寫出常見離子、離子化合物的名稱與化學式。</div>
-          <div class="goal"><strong>連結現象</strong>能解釋離子顏色、離子遷移與導電等現象。</div>
+      <section class="section" id="slots">
+        <h3>內容插槽總覽</h3>
+        <p class="section-lead">下面這些插槽名稱可以直接沿用到你之後所有章節。你只要維持相同命名，之後每章都會很好維護。</p>
+        <div class="slot-grid">
+          <div class="slot">
+            <span class="slot-label">Markdown</span>
+            <strong>md-intro</strong>
+            <p>放本章導言、學習目標、課前提問、課後重點整理。最適合純文字與條列內容。[web:349][web:357]</p>
+            <div class="md-zone">
+              <div class="placeholder">在這裡貼上 Markdown 內容，例如章節簡介、概念重點、學習提示。</div>
+            </div>
+          </div>
+
+          <div class="slot">
+            <span class="slot-label">Markdown</span>
+            <strong>md-concept-notes</strong>
+            <p>放概念說明、例子、錯誤觀念提醒、比較表。適合快速編輯與增補內容。[web:349][web:348]</p>
+            <div class="md-zone">
+              <div class="placeholder">例如：離子鍵定義、陽離子與陰離子比較、金屬鍵 vs 離子鍵。</div>
+            </div>
+          </div>
+
+          <div class="slot">
+            <span class="slot-label">HTML</span>
+            <strong>html-quick-check</strong>
+            <p>放題目卡、<code>&lt;details&gt;</code> 答案區、配對題、選擇題。這類區塊需要較清楚的互動結構。[web:347][web:356]</p>
+            <div class="html-zone">
+              <div class="placeholder">在這裡貼上 HTML 題目卡，例如 details/summary、按鈕、選項區。</div>
+            </div>
+          </div>
+
+          <div class="slot">
+            <span class="slot-label">HTML</span>
+            <strong>html-concept-demo</strong>
+            <p>放科學概念小動畫、粒子移動示意、Rutherford scattering、電子轉移、離子遷移等。[web:367][web:370]</p>
+            <div class="html-zone">
+              <div class="placeholder">在這裡貼上 HTML/CSS/JS 小元件，例如一個動畫容器和播放按鈕。</div>
+            </div>
+          </div>
+
+          <div class="slot">
+            <span class="slot-label">Markdown</span>
+            <strong>md-review</strong>
+            <p>放延遲複習題、回家作業、考前回顧清單。這類內容常常改動，最適合 Markdown。[web:329][web:332]</p>
+            <div class="md-zone">
+              <div class="placeholder">例如：三天後再做的 5 題回顧題、考前複習 checklist。</div>
+            </div>
+          </div>
+
+          <div class="slot">
+            <span class="slot-label">HTML</span>
+            <strong>html-extra-media</strong>
+            <p>放圖片、iframe、SVG 圖解、互動圖卡。當內容需要特別排版時，優先用 HTML。[web:365][web:370]</p>
+            <div class="html-zone">
+              <div class="placeholder">例如：內嵌圖片、SVG 示意圖、YouTube、互動卡片。</div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section class="section" id="warmup">
-        <h3>提取練習</h3>
-        <p class="section-lead">先不要看筆記，先試著回想。這類低風險提取練習有助鞏固課堂學習，不只是重讀內容。[web:329][web:331]</p>
-        <div class="card-grid">
-          <div class="card"><strong>問題 1</strong><ol class="warmup-list"><li>甚麼是離子？</li><li>陽離子與陰離子有何分別？</li><li>哪一類原子較常失去電子？</li></ol></div>
-          <div class="card"><strong>問題 2</strong><ol class="warmup-list"><li>鈉原子會失去還是獲得電子？</li><li>氯原子會失去還是獲得電子？</li><li>離子鍵本質上是甚麼作用力？</li></ol></div>
-          <div class="card"><strong>問題 3</strong><ol class="warmup-list"><li>甚麼是金屬鍵？</li><li>甚麼是離域電子？</li><li>為甚麼金屬能導電？</li></ol></div>
-        </div>
-      </section>
-
-      <section class="section" id="concept-map">
-        <h3>概念流程</h3>
-        <p class="section-lead">這一章最容易混亂的地方，是學生把「金屬鍵」「離子」「離子鍵」「離子化合物」當成互不相關的內容。這裡用流程把整章主線連起來。[file:344]</p>
+      <section class="section" id="concept">
+        <h3>概念流程區</h3>
+        <p class="section-lead">本章的固定骨架仍可保留，因為學生需要穩定的學習路徑；但每個步驟旁邊都可以插入 Markdown 或 HTML 內容。[file:344]</p>
         <div class="concept-flow">
-          <div class="flow-box">金屬內有<br>離域電子</div>
-          <div class="flow-box">原子失去或<br>獲得電子</div>
-          <div class="flow-box">生成陽離子<br>與陰離子</div>
-          <div class="flow-box">相反電荷<br>互相吸引</div>
-          <div class="flow-box">形成離子鍵與<br>離子化合物</div>
+          <div class="flow-box">金屬鍵</div>
+          <div class="flow-box">生成離子</div>
+          <div class="flow-box">離子鍵</div>
+          <div class="flow-box">名稱與化學式</div>
+          <div class="flow-box">現象與應用</div>
         </div>
-      </section>
-
-      <section class="section" id="particles">
-        <h3>粒子圖解</h3>
-        <p class="section-lead">化學鍵與離子屬於微觀概念。這一區用簡化粒子圖，把課本中的描述重新視覺化，幫學生對齊「粒子—符號—解釋」三個層次。[file:344][web:336][web:339]</p>
-        <div class="split">
-          <div class="particle-box">
-            <strong>金屬鍵與電子海</strong>
-            <p>金屬內，金屬離子被可自由移動的離域電子包圍。金屬鍵是離域電子與金屬離子之間的靜電引力。[file:344]</p>
-            <div class="metal-sea">
-              <p><strong>電子海示意：</strong> 正離子規則排列，負電荷電子可在整個金屬內移動，因此金屬通常是良好導電體。[file:344]</p>
-            </div>
+        <div class="two-col" style="margin-top:18px;">
+          <div class="card">
+            <strong>建議做法</strong>
+            <ul class="tip-list">
+              <li>每個概念節保留 1 個 <code>md-*</code> 區，放說明與重點。</li>
+              <li>每個概念節保留 1 個 <code>html-*</code> 區，放圖解、互動題或動畫。</li>
+              <li>這樣你改內容時只動區塊內部，不用重改整頁。</li>
+            </ul>
           </div>
-          <div class="particle-box">
-            <strong>由原子生成離子</strong>
-            <div class="particle-visual">
-              <div class="atom">Na<br>2,8,1</div>
-              <div class="transfer">失去 e⁻</div>
-              <div class="ion">Na⁺<br>2,8</div>
-            </div>
-            <div class="particle-visual">
-              <div class="atom">Cl<br>2,8,7</div>
-              <div class="transfer">得到 e⁻</div>
-              <div class="ion">Cl⁻<br>2,8,8</div>
-            </div>
+          <div class="card">
+            <strong>區塊命名建議</strong>
+            <ul class="tip-list">
+              <li><code>md-metallic-bond</code></li>
+              <li><code>md-ion-formation</code></li>
+              <li><code>html-ion-demo</code></li>
+              <li><code>html-bond-animation</code></li>
+              <li><code>md-application-notes</code></li>
+            </ul>
           </div>
         </div>
       </section>
 
-      <section class="section" id="examples">
-        <h3>分步例題</h3>
-        <p class="section-lead">這一區把解題過程拆成清楚步驟。對初學者而言，先看 worked example，再做相似題，通常比直接丟題目更有效。[web:337][web:343]</p>
-        <div class="step-grid">
-          <div class="example-step">
-            <div class="step-no">Step 1</div>
-            <strong>先寫電子排佈</strong>
-            <p>例如鋁原子的電子排佈是 2,8,3。先看最外層電子數，才能判斷它較易失去還是獲得電子。[file:344]</p>
+      <section class="section" id="question-bank">
+        <h3>題目區設計</h3>
+        <p class="section-lead">如果你日後最常做的事情是新增題目，題目區最好分成兩層：題幹可以用 Markdown 產出，但互動包裝建議用 HTML。[web:349][web:356]</p>
+        <div class="name-grid">
+          <div class="name-box">
+            <strong>名稱：md-quick-questions</strong>
+            <p>用途：題幹草稿、開放式問題、回顧題、工作紙提示。</p>
+            <div class="md-zone">
+              <div class="placeholder">例如：請解釋離子鍵的形成過程。</div>
+            </div>
           </div>
-          <div class="example-step">
-            <div class="step-no">Step 2</div>
-            <strong>判斷穩定方向</strong>
-            <p>金屬原子通常失去最外層電子，以達致接近貴氣體的穩定電子排佈，因此鋁較易失去 3 個電子。[file:344]</p>
+          <div class="name-box">
+            <strong>名稱：html-quiz-cards</strong>
+            <p>用途：選擇題卡、配對題、答案展開區、即時檢查題。</p>
+            <div class="html-zone">
+              <div class="placeholder">例如：details/summary 題目卡，或按鈕式選項題。</div>
+            </div>
           </div>
-          <div class="example-step">
-            <div class="step-no">Step 3</div>
-            <strong>寫出離子符號</strong>
-            <p>鋁原子失去 3 個電子後生成 <code>Al3+</code>。質子數不變，改變的是電子數，因此整體帶正電。[file:344]</p>
+          <div class="name-box">
+            <strong>名稱：html-misconception-check</strong>
+            <p>用途：找錯處題、常見錯誤題、真假判斷題。</p>
+            <div class="html-zone">
+              <div class="placeholder">例如：讓學生判斷「生成離子後質子數改變」是否正確。</div>
+            </div>
           </div>
-          <div class="example-step">
-            <div class="step-no">Step 4</div>
-            <strong>連到離子鍵</strong>
-            <p>當陽離子與陰離子相遇，帶相反電荷的粒子彼此吸引，形成離子鍵，進一步構成離子化合物。[file:344]</p>
-          </div>
+        </div>
+
+        <div class="example-box" style="margin-top:16px;">
+          <strong>HTML 題目模板範例</strong>
+          <pre>&lt;section id="html-quiz-cards"&gt;
+  &lt;details&gt;
+    &lt;summary&gt;題目 1：鈉原子生成鈉離子時失去多少個電子？&lt;/summary&gt;
+    &lt;p&gt;答案：1 個。因為鈉最外層有 1 個電子，失去後形成 Na+。&lt;/p&gt;
+  &lt;/details&gt;
+
+  &lt;details&gt;
+    &lt;summary&gt;題目 2：離子鍵的本質是甚麼？&lt;/summary&gt;
+    &lt;p&gt;答案：帶相反電荷離子之間的靜電引力。&lt;/p&gt;
+  &lt;/details&gt;
+&lt;/section&gt;</pre>
         </div>
       </section>
 
-      <section class="section" id="mistakes">
-        <h3>常見錯誤</h3>
-        <p class="section-lead">這一區不是補充資料，而是幫學生修正錯誤想法。概念修正對真正學會這一章很重要。[web:330][web:343]</p>
+      <section class="section" id="animation">
+        <h3>動畫模組</h3>
+        <p class="section-lead">像盧瑟福散射實驗、電子轉移、離子遷移這些內容，不建議用純 Markdown；因為它們需要運動、顯示切換或互動控制，應使用 HTML/CSS/JavaScript 模組。[web:367][web:370]</p>
+        <div class="two-col">
+          <div class="card">
+            <strong>建議名稱</strong>
+            <ul class="check-list">
+              <li><code>html-rutherford-demo</code></li>
+              <li><code>html-electron-transfer-demo</code></li>
+              <li><code>html-ion-migration-demo</code></li>
+              <li><code>html-particle-model-demo</code></li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>適合放甚麼</strong>
+            <ul class="check-list">
+              <li>Canvas 動畫或 div 動畫</li>
+              <li>播放 / 暫停 / 重播按鈕</li>
+              <li>圖解切換與重點標示</li>
+              <li>學生點擊後顯示解釋</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="example-box" style="margin-top:16px;">
+          <strong>HTML 動畫模組骨架範例</strong>
+          <pre>&lt;section id="html-rutherford-demo" class="concept-demo"&gt;
+  &lt;h4&gt;盧瑟福散射實驗&lt;/h4&gt;
+  &lt;div class="animation-stage"&gt;&lt;/div&gt;
+  &lt;button&gt;播放動畫&lt;/button&gt;
+  &lt;p&gt;大部分 α 粒子直線穿過；少數偏折；極少數反彈。&lt;/p&gt;
+&lt;/section&gt;</pre>
+        </div>
+      </section>
+
+      <section class="section" id="naming-guide">
+        <h3>命名規則</h3>
+        <p class="section-lead">命名只要固定，以後就很容易維護。最簡單的規則就是：<code>格式-用途-主題</code>。</p>
         <div class="card-grid">
-          <div class="error-card">
-            <strong>錯誤 1：生成離子後，質子數會改變</strong>
-            <ul class="error-list">
-              <li>正確：生成離子時改變的是電子數，不是質子數。[file:344]</li>
-              <li>例如 Na 變成 Na+，仍有 11 個質子。[file:344]</li>
-            </ul>
-          </div>
-          <div class="error-card">
-            <strong>錯誤 2：失去電子會變成負電</strong>
-            <ul class="error-list">
-              <li>正確：失去電子後，電子數少於質子數，因此形成陽離子。[file:344]</li>
-              <li>獲得電子才會形成陰離子。[file:344]</li>
-            </ul>
-          </div>
-          <div class="error-card">
-            <strong>錯誤 3：只記名稱，不看電荷</strong>
-            <ul class="error-list">
-              <li>正確：離子名稱、電荷與化學式必須一起學。</li>
-              <li>例如 Mg2+ 與 Mg+ 不是同一回事。</li>
-            </ul>
-          </div>
+          <div class="card"><strong>Markdown 區塊</strong><p><code>md-intro</code>、<code>md-ion-formation</code>、<code>md-review</code>、<code>md-misconceptions</code></p></div>
+          <div class="card"><strong>HTML 區塊</strong><p><code>html-quiz-cards</code>、<code>html-ion-demo</code>、<code>html-rutherford-demo</code>、<code>html-extra-media</code></p></div>
+          <div class="card"><strong>避免命名</strong><p>不要用 <code>box1</code>、<code>test2</code>、<code>new-div</code> 這類名稱，日後會很難找。</p></div>
         </div>
       </section>
 
-      <section class="section" id="naming">
-        <h3>名稱與化學式練習</h3>
-        <p class="section-lead">這一區把概念轉化成可考核技能。學生不只要懂原理，也要能正確寫名稱、離子符號與化學式。[file:344]</p>
-        <div class="practice-grid">
-          <div class="practice-item">
-            <span class="tag">常見陽離子</span>
-            <ul class="practice-list">
-              <li>sodium ion → <code>Na+</code></li>
-              <li>magnesium ion → <code>Mg2+</code></li>
-              <li>aluminium ion → <code>Al3+</code></li>
-              <li>ammonium ion → <code>NH4+</code></li>
-            </ul>
-          </div>
-          <div class="practice-item">
-            <span class="tag">常見陰離子</span>
-            <ul class="practice-list">
-              <li>chloride ion → <code>Cl-</code></li>
-              <li>oxide ion → <code>O2-</code></li>
-              <li>hydroxide ion → <code>OH-</code></li>
-              <li>sulfate ion → <code>SO4 2-</code></li>
-            </ul>
-          </div>
-          <div class="practice-item">
-            <span class="tag">化合物配對</span>
-            <ul class="practice-list">
-              <li>sodium chloride → <code>NaCl</code></li>
-              <li>magnesium oxide → <code>MgO</code></li>
-              <li>aluminium chloride → <code>AlCl3</code></li>
-              <li>ammonium sulfate → <code>(NH4)2SO4</code></li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="applications">
-        <h3>現象與應用</h3>
-        <p class="section-lead">本章不只停留在符號。課本也把離子的顏色、離子的遷移，以及離子化合物與生活材料連結起來，這能幫學生把抽象粒子觀念連回可觀察現象。[file:344]</p>
+      <section class="section" id="edit-guide">
+        <h3>你應該怎樣修改</h3>
+        <p class="section-lead">最推薦的實際工作流程如下。</p>
         <div class="card-grid">
-          <div class="card"><strong>離子顏色</strong>某些離子會令化合物或溶液呈現特定顏色，這使離子不只是紙上的符號，也能與實際觀察連結。[file:344]</div>
-          <div class="card"><strong>離子遷移</strong>在水溶液中，離子可在電場影響下移動，這是理解電解質與導電現象的重要基礎。[file:344]</div>
-          <div class="card"><strong>離子化合物</strong>氯化鈉等離子化合物由大量離子規則排列形成巨型結構，而不是一個個獨立分子。[file:344]</div>
-        </div>
-      </section>
-
-      <section class="section" id="quiz">
-        <h3>自我測驗</h3>
-        <p class="section-lead">這些題目設計成快速自我檢查。先作答，再打開答案檢查自己的理解。[web:331][web:341]</p>
-        <div class="quiz-grid">
-          <div class="quiz-card">
-            <strong>題目 1</strong>
-            <p>鈉原子生成鈉離子時，改變的是甚麼？</p>
-            <details><summary>顯示答案</summary><p>改變的是電子數目；質子數目不變，因此整體帶正電。[file:344]</p></details>
+          <div class="edit-box">
+            <strong>情況 1：只是改解說文字</strong>
+            <p>改 <code>md-intro</code>、<code>md-concept-notes</code>、<code>md-review</code> 這些 Markdown 區塊即可。</p>
           </div>
-          <div class="quiz-card">
-            <strong>題目 2</strong>
-            <p>為甚麼氯原子較易生成 Cl-？</p>
-            <details><summary>顯示答案</summary><p>因為氯原子獲得 1 個電子後可達致穩定的電子排佈，因此形成陰離子。[file:344]</p></details>
+          <div class="edit-box">
+            <strong>情況 2：新增一題</strong>
+            <p>若只是文字題，可加到 <code>md-quick-questions</code>；若要有答案展開或題卡，則加到 <code>html-quiz-cards</code>。</p>
           </div>
-          <div class="quiz-card">
-            <strong>題目 3</strong>
-            <p>離子鍵的本質是甚麼？</p>
-            <details><summary>顯示答案</summary><p>離子鍵是帶相反電荷的離子之間的靜電引力。[file:344]</p></details>
+          <div class="edit-box">
+            <strong>情況 3：加入概念動畫</strong>
+            <p>在 <code>html-rutherford-demo</code> 或其他 <code>html-*-demo</code> 區塊新增 HTML/CSS/JS 模組。</p>
           </div>
-          <div class="quiz-card">
-            <strong>題目 4</strong>
-            <p>寫出 magnesium oxide 的化學式。</p>
-            <details><summary>顯示答案</summary><p><code>MgO</code>，因為 Mg2+ 與 O2- 可按 1:1 配合以達致整體電中性。</p></details>
+          <div class="edit-box">
+            <strong>情況 4：加入圖片或圖解</strong>
+            <p>使用 <code>html-extra-media</code>，因為圖片比例、說明文字和排版通常都需要 HTML 控制。</p>
           </div>
-        </div>
-      </section>
-
-      <section class="section" id="review">
-        <h3>延遲複習</h3>
-        <p class="section-lead">請在 3 天後或下星期再回來做一次。分散後再提取，比只在當天重看更有助長期保留。[web:329][web:332]</p>
-        <div class="review-grid">
-          <div class="review-card"><strong>回顧 1</strong>不用看筆記，寫出 3 個陽離子與 3 個陰離子。</div>
-          <div class="review-card"><strong>回顧 2</strong>解釋金屬鍵與離子鍵有何不同。</div>
-          <div class="review-card"><strong>回顧 3</strong>畫出 Na 變成 Na+、Cl 變成 Cl- 的簡圖。</div>
-          <div class="review-card"><strong>回顧 4</strong>說明為甚麼 NaCl 可由 Na+ 與 Cl- 形成。</div>
         </div>
         <a class="back-home" href="../index.html">← 返回教材首頁</a>
       </section>
