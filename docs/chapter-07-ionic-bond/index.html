@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>化學互動教材站</title>
+  <meta name="description" content="高中化學章節式互動教材網站，整合簡報、互動活動、練習題與學生提問入口。" />
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-2: #eef4f8;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --accent: #dff7f4;
+      --line: #d8e2ea;
+      --shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+    }
+
+    a { color: inherit; }
+
+    .wrap {
+      width: min(var(--max), 92%);
+      margin: 0 auto;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f766e 0%, #155e75 100%);
+      color: #fff;
+      padding: 24px 0 84px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 42px;
+    }
+
+    .brand {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    nav {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.92);
+      font-size: 0.95rem;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      line-height: 1.15;
+      margin: 0 0 18px;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      max-width: 42rem;
+      margin: 0 0 22px;
+      color: rgba(255,255,255,0.94);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary {
+      background: #ffffff;
+      color: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      border: 1px solid rgba(255,255,255,0.35);
+      color: #fff;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .hero-card {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 22px;
+      padding: 22px;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-card h2 {
+      margin-top: 0;
+      font-size: 1.15rem;
+    }
+
+    .hero-card ul {
+      margin: 0;
+      padding-left: 1.1rem;
+    }
+
+    main {
+      margin-top: -42px;
+      padding-bottom: 64px;
+    }
+
+    .section {
+      margin-top: 26px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: 1.6rem;
+    }
+
+    .section-note {
+      color: var(--muted);
+      margin: 0 0 20px;
+    }
+
+    .chapter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .chapter-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .chapter-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      background: var(--accent);
+      border-radius: 999px;
+      padding: 4px 10px;
+      margin-bottom: 10px;
+    }
+
+    .chapter-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+    }
+
+    .chapter-card p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .chapter-card a {
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .soft-box {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .soft-box h3 {
+      margin-top: 0;
+    }
+
+    ul {
+      padding-left: 1.2rem;
+      margin-bottom: 0;
+    }
+
+    code {
+      background: #eef2f7;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: Consolas, monospace;
+      font-size: 0.95em;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 26px 0 40px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding-bottom: 64px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="topbar">
+        <div class="brand">化學互動教材站</div>
+        <nav>
+          <a href="#chapters">章節教材</a>
+          <a href="#usage">使用方式</a>
+          <a href="#structure">網站結構</a>
+        </nav>
+      </div>
+
+      <section class="hero">
+        <div>
+          <h1>高中化學章節式互動教材首頁</h1>
+          <p>這個首頁用作整個 GitHub Pages 教材站的總入口，可放各章節導覽、教學說明、練習連結、提問入口與網站結構說明。GitHub Pages 可直接發布 repository 中的靜態 HTML、CSS、JavaScript 與圖片檔案成為網站。[web:27][web:40]</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#chapters">查看章節</a>
+            <a class="btn btn-secondary" href="./chapter07/">前往 Chapter 07</a>
+          </div>
+        </div>
+
+        <aside class="hero-card">
+          <h2>首頁適合放什麼？</h2>
+          <ul>
+            <li>整個學年或學期的章節總覽</li>
+            <li>每章教材入口頁連結</li>
+            <li>學生提問或常見問題入口</li>
+            <li>教師課程說明與使用指引</li>
+          </ul>
+        </aside>
+      </section>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section class="section panel" id="chapters">
+        <h2 class="section-title">章節教材</h2>
+        <p class="section-note">建議每一章都有自己的資料夾與 <code>index.html</code>，讓學生一點進去就看到該章的簡報、互動活動、練習與提問入口。</p>
+
+        <div class="chapter-grid">
+          <article class="chapter-card">
+            <div class="tag">Chapter 01</div>
+            <h3>原子結構</h3>
+            <p>放入粒子模型、原子結構、元素表示法與基礎概念活動。</p>
+            <a href="#">稍後加入</a>
+          </article>
+
+          <article class="chapter-card">
+            <div class="tag">Chapter 02</div>
+            <h3>化學鍵</h3>
+            <p>可放離子鍵、共價鍵、分子模型與結構比較教材。</p>
+            <a href="#">稍後加入</a>
+          </article>
+
+          <article class="chapter-card">
+            <div class="tag">Chapter 03</div>
+            <h3>化學計量</h3>
+            <p>可放摩爾概念、方程式計算、濃度與應用題練習。</p>
+            <a href="#">稍後加入</a>
+          </article>
+
+          <article class="chapter-card">
+            <div class="tag">Chapter 07</div>
+            <h3>化學平衡</h3>
+            <p>本章可放平衡概念、勒沙特列原理、圖像分析與互動模擬。</p>
+            <a href="./chapter07/">進入 Chapter 07</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="section panel" id="usage">
+        <h2 class="section-title">使用方式</h2>
+        <div class="two-col">
+          <div class="soft-box">
+            <h3>教師端</h3>
+            <ul>
+              <li>把教材放進對應章節資料夾。</li>
+              <li>更新後 push 到 GitHub repository。</li>
+              <li>GitHub Pages 會自動更新靜態網站內容。[web:27][web:173]</li>
+              <li>上課時可直接打開章節頁作投影展示。</li>
+            </ul>
+          </div>
+          <div class="soft-box">
+            <h3>學生端</h3>
+            <ul>
+              <li>直接用瀏覽器開啟網站。</li>
+              <li>按章節進入對應教材頁。</li>
+              <li>可閱讀說明、觀看簡報、操作互動頁。</li>
+              <li>之後可再加上提問表單或 FAQ 頁面。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section panel" id="structure">
+        <h2 class="section-title">網站結構建議</h2>
+        <p class="section-note">GitHub Pages 很適合托管靜態網站；常見做法是將網站檔案整理在 repository 的根目錄或 <code>docs/</code> 資料夾，再於 Pages 設定中選擇該來源資料夾發布。[web:27][web:40]</p>
+
+<pre style="white-space: pre-wrap; background:#0f172a; color:#e5eef8; padding:18px; border-radius:16px; overflow:auto;">
+docs/
+├─ index.html
+├─ chapter01/
+│  └─ index.html
+├─ chapter07/
+│  ├─ index.html
+│  ├─ slides.html
+│  ├─ activity.html
+│  └─ quiz.html
+└─ assets/
+   ├─ css/
+   ├─ js/
+   └─ img/
+</pre>
+
+        <div class="two-col" style="margin-top:20px;">
+          <div class="soft-box">
+            <h3>assets 資料夾</h3>
+            <p>用來集中放樣式、腳本、圖片等支援資源，方便不同頁面共用與維護。靜態網站通常由 HTML、CSS 與 JavaScript 組成。[web:161][web:168]</p>
+          </div>
+          <div class="soft-box">
+            <h3>首頁 index.html</h3>
+            <p>首頁是整個網站的導覽中心，適合放章節卡片、網站說明、更新公告與學生使用指引。GitHub Pages 會尋找 <code>index.html</code> 等作為入口頁。[web:27]</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      化學互動教材站 · GitHub Pages 範例首頁 · 可按學年、章節與教材類型持續擴充。[web:27][web:40]
+    </div>
+  </footer>
+</body>
+</html>
