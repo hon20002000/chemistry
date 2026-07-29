@@ -1,0 +1,148 @@
+.markdown-rendered h1,
+.markdown-rendered h2,
+.markdown-rendered h3 {
+  color: #115e59;
+  margin-top: 0;
+}
+
+.markdown-rendered p,
+.markdown-rendered li {
+  color: #334155;
+}
+
+.markdown-rendered ul,
+.markdown-rendered ol {
+  padding-left: 1.3rem;
+}
+
+#html-quiz-cards,
+#html-misconception-check {
+  display: grid;
+  gap: 12px;
+}
+
+#html-quiz-cards details,
+#html-misconception-check details {
+  border: 1px solid #dbe5ee;
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: #fff;
+}
+
+#html-quiz-cards summary,
+#html-misconception-check summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: #0f766e;
+}
+
+.concept-demo-card {
+  border: 1px solid #dbe5ee;
+  border-radius: 14px;
+  padding: 18px;
+  background: linear-gradient(180deg, #fff, #f8fbfd);
+}
+
+.concept-demo-card h4 {
+  margin-top: 0;
+  color: #115e59;
+}
+
+.demo-btn {
+  margin-top: 12px;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: #0f766e;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.demo-note {
+  color: #64748b;
+  margin-bottom: 0;
+}
+
+.rutherford-stage {
+  position: relative;
+  height: 220px;
+  border-radius: 16px;
+  background: radial-gradient(circle at center, #fff7d6 0 52px, #f8fafc 53px 100%);
+  overflow: hidden;
+  border: 1px solid #dbe5ee;
+}
+
+.nucleus {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  margin-left: -16px;
+  margin-top: -16px;
+  border-radius: 50%;
+  background: #dc2626;
+  box-shadow: 0 0 0 10px rgba(220, 38, 38, 0.15);
+}
+
+.alpha {
+  position: absolute;
+  left: -24px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #2563eb;
+}
+
+.alpha-1 { top: 46px; animation: pass1 5s linear infinite; }
+.alpha-2 { top: 103px; animation: deflect2 5s linear infinite; }
+.alpha-3 { top: 160px; animation: rebound3 5s linear infinite; }
+
+@keyframes pass1 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(560px); }
+}
+
+@keyframes deflect2 {
+  0% { transform: translate(0, 0); }
+  48% { transform: translate(250px, 0); }
+  100% { transform: translate(520px, -55px); }
+}
+
+@keyframes rebound3 {
+  0% { transform: translate(0, 0); }
+  44% { transform: translate(255px, 0); }
+  100% { transform: translate(110px, 60px); }
+}
+
+.ion-demo {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(60px, 1fr));
+  gap: 10px;
+  align-items: center;
+}
+
+.ion-box {
+  text-align: center;
+  padding: 14px 10px;
+  border-radius: 12px;
+  border: 1px solid #dbe5ee;
+  background: #fff;
+}
+
+.ion-positive {
+  background: #ecfdf5;
+  border-color: #b7ead6;
+}
+
+.ion-negative {
+  background: #eff6ff;
+  border-color: #bfdcff;
+}
+
+.ion-arrow {
+  text-align: center;
+  font-weight: 800;
+  color: #0f766e;
+}
