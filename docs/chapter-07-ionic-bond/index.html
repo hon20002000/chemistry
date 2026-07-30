@@ -3,176 +3,287 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chapter 07｜老師易編輯版</title>
-  <meta name="description" content="第七章老師易編輯版教材頁，預留 Markdown 與 HTML 內容插槽，方便加入題目、概念說明與小動畫。" />
-  <link rel="stylesheet" href="./assets/teacher-embeds.css" />
-  <script defer src="./assets/teacher-loader.js"></script>
+  <title>CH7 離子與離子鍵｜課後複習站</title>
+  <meta name="description" content="高中化學 CH7 課後複習站：先回想，再小測，再補看動畫與重點。" />
   <style>
     :root {
       --bg: #f4f7fb;
       --surface: #ffffff;
-      --surface-soft: #f7fbfa;
-      --text: #223344;
-      --muted: #64748b;
-      --line: #dbe5ee;
+      --surface-soft: #f8fbfd;
+      --line: #d8e3ec;
+      --text: #213547;
+      --muted: #5c6f82;
       --primary: #0f766e;
       --primary-dark: #115e59;
-      --primary-soft: #def7f3;
-      --accent: #eef6ff;
-      --embed-soft: #f8fafc;
+      --primary-soft: #ddf4f1;
+      --warning-soft: #fff4db;
+      --danger-soft: #ffe9e8;
       --shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
       --radius-md: 14px;
-      --sidebar-w: 310px;
+      --content: 1180px;
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       font-family: "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
-      background: var(--bg);
+      background: linear-gradient(180deg, #f7fbff, #f2f6fa);
       color: var(--text);
       line-height: 1.7;
     }
-    code { background: #edf2f7; padding: 2px 6px; border-radius: 6px; }
-    .layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
-    .sidebar {
-      position: sticky; top: 0; height: 100vh; overflow-y: auto;
-      padding: 24px 20px 36px; background: linear-gradient(180deg, #163046, #11293c);
-      color: #eef6fb;
+    a { color: inherit; text-decoration: none; }
+    .page { max-width: var(--content); margin: 0 auto; padding: 28px 20px 72px; }
+    .hero {
+      background: linear-gradient(135deg, #ffffff, #f1fbfa);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 30px;
+      margin-bottom: 24px;
     }
-    .sidebar h1 { margin: 0 0 8px; font-size: 1.25rem; }
-    .sidebar p { margin: 0; color: rgba(238,246,251,0.76); font-size: 0.95rem; }
-    .side-block { margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.12); }
-    .side-block h2 { margin: 0 0 10px; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(238,246,251,0.62); }
-    .side-nav, .mini-list { list-style: none; padding: 0; margin: 0; }
-    .side-nav li + li, .mini-list li + li { margin-top: 8px; }
-    .side-nav a, .mini-list a {
-      display: block; text-decoration: none; padding: 10px 12px; border-radius: 12px;
-      color: rgba(255,255,255,0.94);
-    }
-    .side-nav a:hover, .mini-list a:hover { background: rgba(255,255,255,0.08); }
-    .content { padding: 30px 34px 80px; }
-    .hero, .section {
-      background: var(--surface); border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--shadow);
-    }
-    .hero { padding: 30px; background: linear-gradient(135deg, #ffffff, #f4fbfa); margin-bottom: 24px; }
     .eyebrow {
-      display: inline-block; margin-bottom: 10px; padding: 5px 10px; border-radius: 999px;
-      background: var(--primary-soft); color: var(--primary-dark); font-size: 0.82rem; font-weight: 700;
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      font-size: .84rem;
+      font-weight: 700;
+      margin-bottom: 12px;
     }
-    .hero h2 { margin: 0 0 10px; font-size: clamp(2rem, 3.2vw, 2.9rem); line-height: 1.15; }
-    .hero p { margin: 0 0 12px; color: #506577; max-width: 60rem; }
-    .section { margin-top: 24px; padding: 24px; }
-    .section h3 { margin: 0 0 10px; font-size: 1.45rem; }
-    .section-lead { margin: 0 0 16px; color: var(--muted); }
-    .slot-grid, .card-grid { display: grid; gap: 16px; }
-    .slot-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-    .card-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-    .slot, .card {
-      border: 1px solid var(--line); border-radius: var(--radius-md); padding: 18px; background: #fff;
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 3.3vw, 3rem);
+      line-height: 1.12;
     }
-    .slot strong, .card strong { display: block; margin-bottom: 8px; color: var(--primary-dark); }
-    .slot-label {
-      display: inline-block; margin-bottom: 10px; padding: 4px 10px; border-radius: 999px;
-      font-size: 0.8rem; font-weight: 700; background: var(--accent); color: #35506b;
+    .hero p { margin: 0 0 10px; color: var(--muted); max-width: 70ch; }
+    .hint {
+      margin-top: 16px;
+      display: inline-flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--line);
+      font-weight: 700;
     }
-    .md-zone, .html-zone {
-      border: 1px dashed #b8c9da; border-radius: 12px; padding: 14px; margin-top: 12px; background: var(--embed-soft);
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-top: 20px;
     }
-    .md-zone::before, .html-zone::before {
-      display: block; margin-bottom: 8px; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.04em; color: var(--muted);
+    .section h2 { margin: 0 0 8px; font-size: 1.45rem; }
+    .section-lead { margin: 0 0 18px; color: var(--muted); }
+    .quick-grid,
+    .task-grid,
+    .support-grid,
+    .delay-grid {
+      display: grid;
+      gap: 18px;
     }
-    .md-zone::before { content: "MARKDOWN SLOT"; }
-    .html-zone::before { content: "HTML SLOT"; }
-    .placeholder { color: var(--muted); font-size: 0.95rem; }
-    .back-home { display: inline-block; margin-top: 18px; text-decoration: none; color: var(--primary); font-weight: 700; }
-    @media (max-width: 980px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { position: static; height: auto; }
-      .content { padding: 20px; }
+    .quick-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .task-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .support-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .delay-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--surface-soft);
+      padding: 18px;
+    }
+    .card h3 { margin: 0 0 8px; color: var(--primary-dark); font-size: 1.15rem; }
+    .card p { margin: 0 0 14px; color: var(--muted); }
+    .tag {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #eef6ff;
+      color: #35506b;
+      font-size: .78rem;
+      font-weight: 700;
+    }
+    .warning { background: var(--warning-soft); }
+    .danger { background: var(--danger-soft); }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn,
+    .ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+    .btn { background: var(--primary); color: #fff; }
+    .ghost { border: 1px solid var(--line); background: #fff; color: var(--text); }
+    .steps {
+      margin: 0;
+      padding-left: 1.2rem;
+      color: var(--text);
+    }
+    .steps li + li { margin-top: 8px; }
+    .mistake-list { margin: 0; padding-left: 1.2rem; }
+    .mistake-list li + li { margin-top: 10px; }
+    .module-box {
+      border: 1px dashed #b8c9d8;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      background: #fff;
+      font-family: Consolas, monospace;
+      color: #35506b;
+      font-size: .95rem;
+    }
+    .footer-note {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+    @media (max-width: 960px) {
+      .quick-grid,
+      .task-grid,
+      .support-grid,
+      .delay-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <div class="layout">
-    <aside class="sidebar">
-      <h1>Chapter 07</h1>
-      <p>老師易編輯版 · 支援 Markdown / HTML 內嵌</p>
-      <div class="side-block">
-        <h2>頁面導航</h2>
-        <ul class="side-nav">
-          <li><a href="#overview">本章導覽</a></li>
-          <li><a href="#markdown-sections">Markdown 區塊</a></li>
-          <li><a href="#html-sections">HTML 區塊</a></li>
+  <main class="page">
+    <section class="hero">
+      <span class="eyebrow">CH7 After-Class Hub</span>
+      <h1>第 7 章｜離子與離子鍵課後複習站</h1>
+      <p>這不是把整章內容重新搬上網，而是給學生課後用的短任務入口：先回想，再小測，再按需要補看動畫與重點，最後做延遲複習。</p>
+      <div class="hint">今日建議順序：① 3 分鐘回想 → ② 即時小測 → ③ 易錯點 → ④ 動畫補救</div>
+    </section>
+
+    <section class="section">
+      <h2>先做哪個</h2>
+      <p class="section-lead">首頁只放少量高價值任務，避免學生一進來就看到過多內容。</p>
+      <div class="quick-grid">
+        <article class="card">
+          <span class="tag">3 分鐘</span>
+          <h3>先回想再看</h3>
+          <p>不看筆記，先回答本章 3 個核心問題，測試自己是否真的記得。</p>
+          <div class="btn-row">
+            <a class="btn" href="./pages/01-recall.html">開始回想</a>
+          </div>
+        </article>
+        <article class="card">
+          <span class="tag">5 分鐘</span>
+          <h3>即時小測</h3>
+          <p>做 3–5 題本章判斷與應用題，做完後立即看解釋。</p>
+          <div class="btn-row">
+            <a class="btn" href="./pages/02-quiz.html">開始小測</a>
+          </div>
+        </article>
+        <article class="card warning">
+          <span class="tag">補救用</span>
+          <h3>我還是不懂</h3>
+          <p>若前面卡住，再去看電子轉移、離子形成與離子鍵示意。</p>
+          <div class="btn-row">
+            <a class="btn" href="./pages/03-support.html">看補救內容</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>本章最值得做的 4 個模組</h2>
+      <p class="section-lead">每個模組都對應一個外置內容檔，之後你只需要修改 Markdown 或嵌入的 HTML，不必重做首頁。</p>
+      <div class="task-grid">
+        <article class="card">
+          <span class="tag">md 模組</span>
+          <h3>01 本章你要記住什麼</h3>
+          <p>用最短的文字重述本章重點，例如離子形成、電子得失、離子鍵的本質。</p>
+          <div class="module-box">content/ch7-key-points.md</div>
+        </article>
+        <article class="card">
+          <span class="tag">md 模組</span>
+          <h3>02 易錯概念</h3>
+          <p>列出學生最常錯的觀念，課後先修正常見誤解，比重讀整章更有效。</p>
+          <div class="module-box">content/ch7-common-mistakes.md</div>
+        </article>
+        <article class="card">
+          <span class="tag">html 模組</span>
+          <h3>03 電子轉移示意</h3>
+          <p>放可視化演示，例如 Na 與 Cl 的電子轉移、離子電荷形成等。</p>
+          <div class="module-box">embeds/ch7-ion-transfer.html</div>
+        </article>
+        <article class="card">
+          <span class="tag">html 模組</span>
+          <h3>04 課後小測</h3>
+          <p>放單一題型或小型測驗頁，回應課後複習的需要。</p>
+          <div class="module-box">embeds/ch7-mini-quiz.html</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>本章最易錯</h2>
+      <p class="section-lead">這一區塊建議固定保留在首頁，因為課後學生通常不是完全不會，而是記錯或混淆。</p>
+      <div class="card danger">
+        <ul class="mistake-list">
+          <li>生成離子時，改變的是電子數目，不是質子數目。</li>
+          <li>金屬通常失去電子形成陽離子；非金屬通常得到電子形成陰離子。</li>
+          <li>離子鍵不是「電子共享」，而是異號離子之間的靜電吸引。</li>
+          <li>化合物中的總正負電荷需要互相抵消。</li>
         </ul>
       </div>
-      <div class="side-block">
-        <h2>返回網站</h2>
-        <ul class="mini-list">
-          <li><a href="../index.html">← 回到教材首頁</a></li>
-        </ul>
+    </section>
+
+    <section class="section">
+      <h2>補救與延伸</h2>
+      <p class="section-lead">首頁只給必要入口，深入內容放到下一頁，避免首頁過載。</p>
+      <div class="support-grid">
+        <article class="card">
+          <span class="tag">補救頁</span>
+          <h3>概念與動畫補救頁</h3>
+          <p>適合前面做錯後，再回去看圖解、動畫與例題。</p>
+          <div class="btn-row">
+            <a class="btn" href="./pages/03-support.html">前往補救頁</a>
+            <a class="ghost" href="./embeds/ch7-ion-transfer.html">直接打開動畫</a>
+          </div>
+        </article>
+        <article class="card">
+          <span class="tag">反思頁</span>
+          <h3>我還有哪裡不懂</h3>
+          <p>讓學生記下不懂的 1–2 個問題，方便下次上課或作答前回看。</p>
+          <div class="btn-row">
+            <a class="btn" href="./pages/04-reflect.html">前往反思頁</a>
+          </div>
+        </article>
       </div>
-    </aside>
+    </section>
 
-    <main class="content">
-      <section class="hero" id="overview">
-        <span class="eyebrow">Teacher Editable Chapter Page</span>
-        <h2>第七章｜支援外部內容載入的章節頁</h2>
-        <p>這個版本會自動載入 <code>content/</code> 裡的 Markdown 檔與 <code>embeds/</code> 裡的 HTML 檔，讓你用較容易維護的方式更新教材內容。[code_file:2]</p>
-        <p>若頁面內容沒有顯示，請先檢查 <code>assets/teacher-loader.js</code> 是否成功載入，以及 <code>content/</code> 和 <code>embeds/</code> 路徑是否存在。[web:411][web:399]</p>
-      </section>
-
-      <section class="section" id="markdown-sections">
-        <h3>Markdown 區塊</h3>
-        <p class="section-lead">以下區塊由外部 <code>.md</code> 文件載入，適合放章節導言、概念重點、快速問題與延遲複習。[web:349][web:357]</p>
-        <div class="slot-grid">
-          <div class="slot">
-            <span class="slot-label">Markdown</span>
-            <strong>md-intro</strong>
-            <div class="md-zone" id="slot-md-intro"><div class="placeholder">載入 md-intro.md 中…</div></div>
-          </div>
-          <div class="slot">
-            <span class="slot-label">Markdown</span>
-            <strong>md-concept-notes</strong>
-            <div class="md-zone" id="slot-md-concept-notes"><div class="placeholder">載入 md-concept-notes.md 中…</div></div>
-          </div>
-          <div class="slot">
-            <span class="slot-label">Markdown</span>
-            <strong>md-quick-questions</strong>
-            <div class="md-zone" id="slot-md-quick-questions"><div class="placeholder">載入 md-quick-questions.md 中…</div></div>
-          </div>
-          <div class="slot">
-            <span class="slot-label">Markdown</span>
-            <strong>md-review</strong>
-            <div class="md-zone" id="slot-md-review"><div class="placeholder">載入 md-review.md 中…</div></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="html-sections">
-        <h3>HTML 區塊</h3>
-        <p class="section-lead">以下區塊由外部 <code>.html</code> 文件載入，適合放題目卡、錯誤觀念檢查、電子轉移示意與科學概念動畫。[web:347][web:356][web:367]</p>
-        <div class="card-grid">
-          <div class="card">
-            <strong>html-quiz-cards</strong>
-            <div class="html-zone" id="slot-html-quiz-cards"><div class="placeholder">載入 html-quiz-cards.html 中…</div></div>
-          </div>
-          <div class="card">
-            <strong>html-misconception-check</strong>
-            <div class="html-zone" id="slot-html-misconception-check"><div class="placeholder">載入 html-misconception-check.html 中…</div></div>
-          </div>
-          <div class="card">
-            <strong>html-rutherford-demo</strong>
-            <div class="html-zone" id="slot-html-rutherford-demo"><div class="placeholder">載入 html-rutherford-demo.html 中…</div></div>
-          </div>
-          <div class="card">
-            <strong>html-ion-demo</strong>
-            <div class="html-zone" id="slot-html-ion-demo"><div class="placeholder">載入 html-ion-demo.html 中…</div></div>
-          </div>
-        </div>
-        <a class="back-home" href="../index.html">← 返回教材首頁</a>
-      </section>
-    </main>
-  </div>
+    <section class="section">
+      <h2>延遲複習</h2>
+      <p class="section-lead">課後網站最值得加入的，不是更多內容，而是幫學生安排何時再回來。</p>
+      <div class="delay-grid">
+        <article class="card">
+          <span class="tag">1 天後</span>
+          <h3>快速再做</h3>
+          <p>重做 3 題回想題，確認今天學的有沒有留下來。</p>
+        </article>
+        <article class="card">
+          <span class="tag">3 天後</span>
+          <h3>再做小測</h3>
+          <p>重做一組小測，檢查是否仍會把離子與離子鍵混淆。</p>
+        </article>
+        <article class="card">
+          <span class="tag">7 天後</span>
+          <h3>綜合回顧</h3>
+          <p>試寫出 NaCl、MgO 這類化合物的形成與化學式理由。</p>
+        </article>
+      </div>
+      <p class="footer-note">若其他章節也採相同做法，只需替換標題、連結與對應模組檔案即可。</p>
+    </section>
+  </main>
 </body>
 </html>
